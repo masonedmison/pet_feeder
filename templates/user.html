@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/css/loginPage.css" rel="stylesheet">
+
+  <title>Admin Feeder</title>
+
+</head>
+<body>
+
+  <div class="container">
+
+    <form class="form-signin" role="form" name="login" action="/addUser" method="post">
+      <h2 class="form-signin-heading">Enter credentials</h2>
+
+      <label for="usrname" class="sr-only">User Name or Email</label>
+      <input type="text" id="usrname" name="usrname" class="form-control" placeholder="User Name or Email" required autofocus>
+      <br>
+      <label for="psw" class="sr-only">Password</label>
+      <input type="password" id="psw" name="psw" class="form-control" placeholder="Password" required>
+      <br>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+    </form>
+
+  </div>
+
+</body>
+</html>

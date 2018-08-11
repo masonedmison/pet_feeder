@@ -1,0 +1,9 @@
+# exclude everything
+*.pyc
+static/video/*
+logs/*
+feeder.db
+
+# exception to the rule
+!static/video/.gitkeep 
+!logs/.gitkeep 
