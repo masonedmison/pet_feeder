@@ -159,7 +159,14 @@ def feedbuttonclickSmartHome():
 def scheduleDatetime():
     try:
         scheduleDatetime = [request.form['scheduleDatetime']][0]
-        dateobject=datetime.datetime.strptime(scheduleDatetime,'%Y-%m-%dT%H:%M')
+        scheduleTime = [request.form['scheduleTime']][0]
+
+        dateobj = datetime.datetime.strptime(scheduleDatetime, '%Y-%m-%d')
+        timeobj = datetime.datetime.strptime(scheduleTime, '%H:%M').time()
+
+        dateobject=datetime.datetime.combine(dateobj,timeobj)
+        # dateobject=datetime.datetime.strptime(scheduleDatetime,'%Y-%m-%dT%H:%M')
+
         dbInsert = commonTasks.db_insert_feedtime(dateobject, 0)
         if dbInsert <> 'ok':
             flash('Error! The time has not been scheduled! Error Message: ' + dbInsert,'error')
@@ -174,7 +181,7 @@ def scheduleDatetime():
 @app.route('/deleteRow/<history>', methods=['GET', 'POST'])
 def deleteRow(history):
     try:
-        dateObj = datetime.datetime.strptime(history, "%m-%d-%y %I:%M:%S %p")
+        dateObj = datetime.datetime.strptime(history, "%m-%d-%y %I:%M %p")
         deleteRowFromDB=deleteUpcomingFeedingTime(str(dateObj))
         if deleteRowFromDB <> 'ok':
             flash('Error! The row has not been deleted! Error Message: ' + deleteRowFromDB,'error')
@@ -221,8 +228,8 @@ def DetectCamera():
     try:
 
         process = subprocess.Popen(["vcgencmd", "get_camera"],
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT)
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT)
         return process.stdout.read()
     except Exception,e:
         return e
@@ -296,7 +303,7 @@ def login_verify():
             return redirect(url_for('admin_login_page'))
 
     except Exception, e:
-      return render_template('error.html',resultsSET=e)
+        return render_template('error.html',resultsSET=e)
 
 
 @app.route('/logout',methods=['GET', 'POST'])
@@ -509,8 +516,8 @@ def ControlService(serviceToCheck,command):
     try:
 
         process = subprocess.Popen(["sudo", "service", serviceToCheck, command],
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT)
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT)
         return process.stdout.read()
     except Exception,e:
         return render_template('error.html',resultsSET=e)
@@ -525,7 +532,7 @@ def CleanServiceStatusOutput(serviceOutput):
         buttonServiceStartString = buttonServiceFinalStatus.find('since')
         buttonServiceEndString = buttonServiceFinalStatus.find('; ', buttonServiceStartString)
         buttonServiceFinalStatus = str(buttonServiceFinalStatus).replace(
-        buttonServiceFinalStatus[buttonServiceStartString:buttonServiceEndString], '')
+            buttonServiceFinalStatus[buttonServiceStartString:buttonServiceEndString], '')
 
         return buttonServiceFinalStatus
     except Exception,e:

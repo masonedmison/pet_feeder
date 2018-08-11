@@ -10,16 +10,16 @@
     <meta name="author" content="">
 
     {% if localOrRemote == 'local' %}
-        <title>Admin Feeder Internal</title>
+    <title>Admin Feeder Internal</title>
     {% else %}
-        <title>Admin Feeder External</title>
+    <title>Admin Feeder External</title>
     {% endif %}
 
     <link rel="icon" href="/static/images/titleIcon.png">
 
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/css/navBar.css" rel="stylesheet">
-    <link href="static/css/googleFonts.css" rel="stylesheet" type="text/css">  
+    <link href="static/css/googleFonts.css" rel="stylesheet" type="text/css">
     <script src="static/js/html5shiv.js"></script>
     <script src="static/js/respond.min.js"></script>
 
@@ -53,6 +53,15 @@
             margin-bottom: 5px;
         }
 
+    hr {
+        border: none;
+        height: 3px;
+        color: #9a9fa8;
+        background-color: #9a9fa8;
+        width="50%";
+    }
+
+
     </style>
 
 </head>
@@ -62,12 +71,12 @@
 <div class="container">
 
 
-<nav class="navbar navbar-default">
-  <div class="navbar-header">
-        <p class="navbar-brand1 navbar-brand navBarTitle">Admin</p>
-      <img class="img-responsive" src="/static/images/titleIcon.png" width="75" height="75" >
-  </div>
-</nav>
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <p class="navbar-brand1 navbar-brand navBarTitle">Admin</p>
+            <img class="img-responsive" src="/static/images/titleIcon.png" width="75" height="75" >
+        </div>
+    </nav>
 
 
 
@@ -81,7 +90,6 @@
         <br>
     </div>
     {% endfor %}
-
     {% endif %}
     {% endwith %}
 
@@ -95,12 +103,11 @@
         <form role="form" id="stopTimeService" method="post" action="/stopTimeService">
             <button class="btn btn-danger" type="submit">Stop</button>
         </form>
-        <br>
-        <h5 id="TimeServiceMessage">{{timeServiceFinalStatus}}</h5>
-
+        <div>
+            <h5 id="TimeServiceMessage">{{timeServiceFinalStatus}}</h5>
+        </div>
     </div>
 
-    <hr size="2"/>
 
     <div id="ButtonService">
         <img id="ButtonServiceIcon" src="/static/images/yellowcircle.png" height="20" width="20">
@@ -111,11 +118,11 @@
         <form role="form" id="stopButtonService" method="post" action="/stopButtonService">
             <button class="btn btn-danger" type="submit">Stop</button>
         </form>
-        <br>
-        <h5 id="ButtonServiceMessage">{{buttonServiceFinalStatus}}</h5>
+        <div>
+            <h5 id="ButtonServiceMessage">{{buttonServiceFinalStatus}}</h5>
+        </div>
     </div>
 
-    <hr size="2"/>
 
     <div id="WebcamService">
         <img id="WebcamServiceIcon" src="/static/images/yellowcircle.png" height="20" width="20">
@@ -126,11 +133,11 @@
         <form role="form" id="stopWebcamService" method="post" action="/stopWebcamService">
             <button class="btn btn-danger" type="submit">Stop</button>
         </form>
-        <br>
-        <h5 id="WebcamServiceMessage">{{webcameraServiceFinalStatus}}</h5>
+        <div>
+            <h5 id="WebcamServiceMessage">{{webcameraServiceFinalStatus}}</h5>
+        </div>
     </div>
 
-    <hr size="2"/>
 
     <div id="sshService">
         <img id="sshServiceIcon" src="/static/images/yellowcircle.png" height="20" width="20">
@@ -141,13 +148,12 @@
         <form role="form" id="stopSshService" method="post" action="/stopSshService">
             <button class="btn btn-danger" type="submit">Stop</button>
         </form>
-        <br>
-        <h5 id="sshServiceMessage">{{sshServiceFinalStatus}}</h5>
+        <div>
+            <h5 id="sshServiceMessage">{{sshServiceFinalStatus}}</h5>
+        </div>
     </div>
 
-    <hr size="2"/>
-
-
+    <hr>
 
     <div id="BadLoginTable">
         <h4>Invalid logins</h4>
@@ -155,18 +161,18 @@
         {% if invalidLogins != None %}
         <table class="table">
             <thead>
-                <th><h5>Login Name</h5></th>
-                <th><h5>Login PW</h5></th>
-                <th><h5>Login Date</h5></th>
+            <th><h5>Login Name</h5></th>
+            <th><h5>Login PW</h5></th>
+            <th><h5>Login Date</h5></th>
             </thead>
             <tbody>
-                {% for entry in invalidLogins %}
-                <tr>
-                    <td>{{entry[0]}}</td>
-                    <td>{{entry[1]}}</td>
-                    <td>{{entry[2]}}</td>
-                </tr>
-                {% endfor %}
+            {% for entry in invalidLogins %}
+            <tr>
+                <td>{{entry[0]}}</td>
+                <td>{{entry[1]}}</td>
+                <td>{{entry[2]}}</td>
+            </tr>
+            {% endfor %}
             </tbody>
         </table>
 
@@ -176,7 +182,7 @@
         {% endif %}
     </div>
 
-    <hr size="2"/>
+    <hr>
 
     <div id="UserLoginTable">
         <h4>User logins</h4>
@@ -186,18 +192,18 @@
         <form name="myForm" method="post">
             <table class="table" id="userTable">
                 <thead>
-                    <th><h5>User Name</h5></th>
-                    <th><h5>Delete User</h5></th>
+                <th><h5>User Name</h5></th>
+                <th><h5>Delete User</h5></th>
                 </thead>
                 <tbody>
-                    {% for entry in userLogins %}
-                    <tr>
-                        <td>{{entry[1]}}</td>
-                        <td class="text-center">
-                            <input class="btn-sm btn-danger" type="button" value="Delete" onclick="deleteRow(this)"/>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                {% for entry in userLogins %}
+                <tr>
+                    <td>{{entry[1]}}</td>
+                    <td class="text-center">
+                        <input class="btn-sm btn-danger" type="button" value="Delete" onclick="deleteRow(this)"/>
+                    </td>
+                </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </form>
@@ -208,14 +214,13 @@
     </div>
 
     <div>
-        <br>
         <a href="/User" class="btn btn-primary">Add User</a>
     </div>
 
-    <hr size="2"/>
+    <hr>
 
 
-    <div id="OtherLinks" class="col-md-12" >
+    <div id="OtherLinks">
         <a href="/" class="btn btn-primary btn-space">Home</a>
         <a href="{{cameraSiteAddress}}" class="btn btn-primary btn-space">Webcam Admin</a>
         <a href="/logout" class="btn btn-primary btn-space">Logout</a>
@@ -226,7 +231,7 @@
 </div>
 
 
-    <script>
+<script>
         var a=document.getElementById("TimeServiceMessage");
         var endSearch=a.innerHTML.indexOf("(");
         var substring=a.innerHTML.substring(0,endSearch)
@@ -240,7 +245,7 @@
         }
     </script>
 
-    <script>
+<script>
         var a=document.getElementById("ButtonServiceMessage");
         var endSearch=a.innerHTML.indexOf("(");
         var substring=a.innerHTML.substring(0,endSearch)
@@ -254,7 +259,7 @@
         }
     </script>
 
-    <script>
+<script>
         var a=document.getElementById("WebcamServiceMessage");
         var endSearch=a.innerHTML.indexOf("(");
         var substring=a.innerHTML.substring(0,endSearch)
@@ -268,7 +273,7 @@
         }
     </script>
 
-    <script>
+<script>
         var a=document.getElementById("sshServiceMessage");
         var endSearch=a.innerHTML.indexOf("(");
         var substring=a.innerHTML.substring(0,endSearch)
@@ -283,7 +288,7 @@
     </script>
 
 
-    <script>
+<script>
         function deleteRow(btn){
             var table=document.getElementById('userTable');
             var i=btn.parentNode.parentNode.rowIndex;

@@ -40,17 +40,17 @@ def db_insert_feedtime(dateObject,complete):
 
 
 def db_get_last_feedtimes(numberToGet):
-        con = connect_db()
-        cur = con.execute(''' select feeddate,description
+    con = connect_db()
+    cur = con.execute(''' select feeddate,description
                             from feedtimes ft
                             join feedtypes fty on ft.feedtype=fty.feedtype
                             where ft.feedtype<>0
                             order by feeddate desc
                             limit ?''', [str(numberToGet), ])
-        LastFeedingTimes = cur.fetchall()
-        cur.close()
-        con.close()
-        return LastFeedingTimes
+    LastFeedingTimes = cur.fetchall()
+    cur.close()
+    con.close()
+    return LastFeedingTimes
 
 
 def db_get_scheduled_feedtimes(numberToGet):
