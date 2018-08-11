@@ -23,7 +23,15 @@ sudo apt-get autoremove
 
 reboot machine
 
-3.) set up python & feeder site
+3.) Permissions 
+(Add under Allow members of group sudo to execute any command)
+sudo visudo
+www-data ALL=(root) NOPASSWD: ALL
+
+Ctrl-x to Exit and 'Y' to save and Enter
+
+
+4.) set up python & feeder site
 (Probaby already installed but doesnt hurt to run again)
 sudo apt-get install python-dev
 sudo apt-get install git
@@ -42,21 +50,15 @@ git clone https://gitlab.com/DiyPetFeeder/feeder.git
 python /var/www/feeder/feeder/createDB.py 
 sudo chmod 777 -R /var/www/feeder
 
-4.) Set up apache
+5.) Set up apache
 sudo apt-get install apache2
 sudo apt-get install libapache2-mod-wsgi
 sudo a2enmod headers
 sudo systemctl restart apache2
 
-5.) give run permission
+6.) give run permission
 sudo usermod -a -G gpio www-data
 
-6.) Root for all 
-(Add under Allow members of group sudo to execute any command)
-sudo visudo
-www-data ALL=(root) NOPASSWD: ALL
-
-Ctrl-x to Exit and 'Y' to save and Enter
 
 7.) Edit apache config
 
