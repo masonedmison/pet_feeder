@@ -3,6 +3,7 @@
 static/video/*
 logs/*
 feeder.db
+app.cfg
 
 # exception to the rule
 !static/video/.gitkeep 

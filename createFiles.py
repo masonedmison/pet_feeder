@@ -8,9 +8,10 @@ from werkzeug import generate_password_hash
 
 try:
     dbPath='/var/www/feeder/feeder/feeder.db'
+    appCFGPath = '/var/www/feeder/feeder/app.cfg'
 
     if os.path.isfile(dbPath):
-        raise ValueError ('DB already exists. To create again first delete current copy') 
+        print ('DB already exists. To create again first delete current copy')
     else:
         print ('Creating DB. Please wait.')
         con = sqlite3.connect(dbPath)
@@ -30,5 +31,34 @@ try:
         con.close()
         process = subprocess.Popen(["sudo", "chmod", "777", "-R", "/var/www/feeder"],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         print ('DB created')
+
+    if os.path.isfile(appCFGPath):
+        print ('app.cfg already exists. To create again first delete current copy')
+    else:
+        print ('Creating app.cfg. Please wait.')
+        f = open(appCFGPath, "w+")
+
+        f.write("""[feederConfig]
+ Database_Location=/var/www/feeder/feeder/feeder.db
+ Feed_Button_GPIO_Pin=12
+ Hopper_GPIO_Pin=11
+ Hopper_Spin_Time=0.6
+ Local_Camera_Site_Address=http://yourremoteaddress.duckdns.org:8081
+ Local_IP_Start=192
+ Log_ButtonService_Filename=/var/www/feeder/feeder/logs/feederButtonService.log
+ Log_TimeService_Filename=/var/www/feeder/feeder/logs/feederTimeService.log
+ Motion_Video_Dir_Path=/var/www/feeder/feeder/static/video
+ Number_Days_Of_Videos_To_Keep=1
+ Number_Feed_Times_To_Display=5
+ Number_Scheduled_Feed_Times_To_Display=5
+ Number_Videos_To_Display=100
+ Remote_Camera_Site_Address=http://yourremoteaddress.duckdns.org:8081
+ Seconds_Delay_After_Button_Push=3
+ Seconds_Delay_Between_Schedule_Checks=300
+ Secretkey=SUPER_SECRET_KEY""")
+
+        f.close()
+        print ('app.cfg created')
+
 except Exception as e:
     print ('Error: '+str(e))
