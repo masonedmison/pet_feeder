@@ -47,7 +47,8 @@ source bin/activate
 pip install flask
 pip install RPi.GPIO
 git clone https://gitlab.com/DiyPetFeeder/feeder.git
-python /var/www/feeder/feeder/createFiles.py 
+cd feeder
+python createFiles.py 
 sudo chmod 777 -R /var/www/feeder
 
 5.) Set up apache

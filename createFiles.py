@@ -39,23 +39,23 @@ try:
         f = open(appCFGPath, "w+")
 
         f.write("""[feederConfig]
- Database_Location=/var/www/feeder/feeder/feeder.db
- Feed_Button_GPIO_Pin=12
- Hopper_GPIO_Pin=11
- Hopper_Spin_Time=0.6
- Local_Camera_Site_Address=http://yourremoteaddress.duckdns.org:8081
- Local_IP_Start=192
- Log_ButtonService_Filename=/var/www/feeder/feeder/logs/feederButtonService.log
- Log_TimeService_Filename=/var/www/feeder/feeder/logs/feederTimeService.log
- Motion_Video_Dir_Path=/var/www/feeder/feeder/static/video
- Number_Days_Of_Videos_To_Keep=1
- Number_Feed_Times_To_Display=5
- Number_Scheduled_Feed_Times_To_Display=5
- Number_Videos_To_Display=100
- Remote_Camera_Site_Address=http://yourremoteaddress.duckdns.org:8081
- Seconds_Delay_After_Button_Push=3
- Seconds_Delay_Between_Schedule_Checks=300
- Secretkey=SUPER_SECRET_KEY""")
+Database_Location=/var/www/feeder/feeder/feeder.db
+Feed_Button_GPIO_Pin=12
+Hopper_GPIO_Pin=11
+Hopper_Spin_Time=0.6
+Local_Camera_Site_Address=http://yourremoteaddress.duckdns.org:8081
+Local_IP_Start=192
+Log_ButtonService_Filename=/var/www/feeder/feeder/logs/feederButtonService.log
+Log_TimeService_Filename=/var/www/feeder/feeder/logs/feederTimeService.log
+Motion_Video_Dir_Path=/var/www/feeder/feeder/static/video
+Number_Days_Of_Videos_To_Keep=1
+Number_Feed_Times_To_Display=5
+Number_Scheduled_Feed_Times_To_Display=5
+Number_Videos_To_Display=100
+Remote_Camera_Site_Address=http://yourremoteaddress.duckdns.org:8081
+Seconds_Delay_After_Button_Push=3
+Seconds_Delay_Between_Schedule_Checks=300
+Secretkey=SUPER_SECRET_KEY""")
 
         f.close()
         print ('app.cfg created')
