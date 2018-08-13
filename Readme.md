@@ -59,6 +59,8 @@ sudo systemctl restart apache2
 
 6.) give run permission
 sudo usermod -a -G gpio www-data
+sudo usermod -aG video www-data
+sudo systemctl apache2 restart
 
 
 7.) Edit apache config
