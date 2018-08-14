@@ -30,10 +30,9 @@ latestXNumberFeedTimesValue = str(configParser.get('feederConfig', 'Number_Feed_
 upcomingXNumberFeedTimesValue = str(configParser.get('feederConfig', 'Number_Scheduled_Feed_Times_To_Display'))
 motionVideoDirPath = str(configParser.get('feederConfig', 'Motion_Video_Dir_Path'))
 latestXNumberVideoFeedTimesValue = str(configParser.get('feederConfig', 'Number_Videos_To_Display'))
-localCameraSiteAddress = str(configParser.get('feederConfig', 'Local_Camera_Site_Address'))
-remoteCameraSiteAddress = str(configParser.get('feederConfig', 'Remote_Camera_Site_Address'))
+motionCameraSiteAddress = str(configParser.get('feederConfig', 'Motion_Camera_Site_Address'))
 nowMinusXDays = str(configParser.get('feederConfig', 'Number_Days_Of_Videos_To_Keep'))
-localIpStart = str(configParser.get('feederConfig', 'Local_IP_Start'))
+
 
 #####################################################################################
 ##########################################HOME PAGE##################################
@@ -61,17 +60,8 @@ def home_page():
             x = tuple(x)
             finalUpcomingFeedTimeList.append(x)
 
-        ipAddress = request.remote_addr
-        cameraSiteAddress=''
-        localOrRemote=''
-        if str(ipAddress).startswith(localIpStart):
-            cameraSiteAddress=localCameraSiteAddress
-            localOrRemote='local'
-        else:
-            cameraSiteAddress = remoteCameraSiteAddress
-            localOrRemote='remote'
 
-        # #latestXVideoFeedTimes
+        # latestXVideoFeedTimes
         latestXVideoFeedTimes = []
         for path, subdirs, files in os.walk(motionVideoDirPath):
             for name in sorted(files, key=lambda name:
@@ -85,8 +75,8 @@ def home_page():
         latestXVideoFeedTimes = latestXVideoFeedTimes[:int(latestXNumberVideoFeedTimesValue)]
         latestXVideoFeedTimes=latestXVideoFeedTimes[::-1] #Reverse so newest first
 
-        cameraStatusOutput = DetectCamera()
-        #cameraStatusOutput = 'supported=0 detected=1'
+        #cameraStatusOutput = DetectCamera()
+        cameraStatusOutput = 'supported=0 detected=1'
         if "detected=1" not in cameraStatusOutput:
             cameraStatus='0'
         else:
@@ -95,8 +85,7 @@ def home_page():
         #Return page
         return render_template('home.html',latestXNumberFeedTimes=finalFeedTimeList
                                ,upcomingXNumberFeedTimes=finalUpcomingFeedTimeList
-                               ,cameraSiteAddress=cameraSiteAddress
-                               ,localOrRemote=localOrRemote
+                               ,cameraSiteAddress=motionCameraSiteAddress
                                ,latestXVideoFeedTimes=latestXVideoFeedTimes
                                ,cameraStatus=cameraStatus
                                )
@@ -328,16 +317,6 @@ def admin_page():
             webcameraServiceFullOutput = ControlService('motion', 'status')
             webcameraServiceFinalStatus = CleanServiceStatusOutput(webcameraServiceFullOutput)
 
-            ipAddress = request.remote_addr
-            cameraSiteAddress=''
-            localOrRemote = ''
-            if str(ipAddress).startswith(localIpStart):
-                cameraSiteAddress = localCameraSiteAddress
-                localOrRemote = 'local'
-            else:
-                cameraSiteAddress = remoteCameraSiteAddress
-                localOrRemote = 'remote'
-
             #Bad login log
             conn = sqlite3.connect(DB)
             c = conn.cursor()
@@ -360,12 +339,9 @@ def admin_page():
             conn.commit()
             conn.close()
 
-
             return render_template('admin.html'
                                    ,buttonServiceFinalStatus=buttonServiceFinalStatus
                                    ,timeServiceFinalStatus=timeServiceFinalStatus
-                                   ,cameraSiteAddress=cameraSiteAddress
-                                   ,localOrRemote=localOrRemote
                                    ,invalidLogins=invalidLogins
                                    ,sshServiceFinalStatus=sshServiceFinalStatus
                                    ,webcameraServiceFinalStatus=webcameraServiceFinalStatus

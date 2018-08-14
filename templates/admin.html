@@ -1,57 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
+{% block head %}
+{{ super() }}
+<style>
+    #TimeService {display:inline-block}
+    #TimeServiceIcon {display:inline-block}
+    #TimeServiceStatus {display:inline-block}
+    #TimeServiceMessage {display:inline-block}
+    #startTimeService {display:inline-block}
+    #stopTimeService {display:inline-block}
+    #ButtonServiceIcon {display:inline-block}
+    #ButtonServiceStatus {display:inline-block}
+    #ButtonServiceMessage {display:inline-block}
+    #startButtonService {display:inline-block}
+    #stopButtonService {display:inline-block}
+    #WebcamServiceIcon {display:inline-block}
+    #WebcamServiceStatus {display:inline-block}
+    #WebcamServiceMessage {display:inline-block}
+    #startWebcamService {display:inline-block}
+    #stopWebcamService {display:inline-block}
+    #otherLinks {display:inline-block}
+    #BadLoginTable {display:inline-block}
+    #sshServiceIcon {display:inline-block}
+    #sshServiceStatus {display:inline-block}
+    #sshServiceMessage {display:inline-block}
+    #startSshService {display:inline-block}
+    #stopSshService {display:inline-block}
+    #UserLoginTable {display:inline-block}
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    {% if localOrRemote == 'local' %}
-    <title>Admin Feeder</title>
-    {% else %}
-    <title>Admin Feeder</title>
-    {% endif %}
-
-    <link rel="icon" href="/static/images/titleIcon.png">
-
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/css/navBar.css" rel="stylesheet">
-    <link href="static/css/googleFonts.css" rel="stylesheet" type="text/css">
-    <script src="static/js/html5shiv.js"></script>
-    <script src="static/js/respond.min.js"></script>
-
-    <style>
-        #TimeService {display:inline-block}
-        #TimeServiceIcon {display:inline-block}
-        #TimeServiceStatus {display:inline-block}
-        #TimeServiceMessage {display:inline-block}
-        #startTimeService {display:inline-block}
-        #stopTimeService {display:inline-block}
-        #ButtonServiceIcon {display:inline-block}
-        #ButtonServiceStatus {display:inline-block}
-        #ButtonServiceMessage {display:inline-block}
-        #startButtonService {display:inline-block}
-        #stopButtonService {display:inline-block}
-        #WebcamServiceIcon {display:inline-block}
-        #WebcamServiceStatus {display:inline-block}
-        #WebcamServiceMessage {display:inline-block}
-        #startWebcamService {display:inline-block}
-        #stopWebcamService {display:inline-block}
-        #otherLinks {display:inline-block}
-        #BadLoginTable {display:inline-block}
-        #sshServiceIcon {display:inline-block}
-        #sshServiceStatus {display:inline-block}
-        #sshServiceMessage {display:inline-block}
-        #startSshService {display:inline-block}
-        #stopSshService {display:inline-block}
-        #UserLoginTable {display:inline-block}
-
-        .btn-space {
-            margin-bottom: 5px;
-        }
+    .btn-space {
+        margin-bottom: 5px;
+    }
 
     hr {
         border: none;
@@ -60,39 +39,10 @@
         background-color: #9a9fa8;
         width="50%";
     }
-
-
     </style>
+{% endblock %}
 
-</head>
-
-<body>
-
-<div class="container">
-
-
-    <nav class="navbar navbar-default">
-        <div class="navbar-header">
-            <p class="navbar-brand1 navbar-brand navBarTitle">Admin</p>
-            <img class="img-responsive" src="/static/images/titleIcon.png" width="75" height="75" >
-        </div>
-    </nav>
-
-
-
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-
-    {% for message in messages %}
-    <div id="message" class="alert alert-success">
-        <!--<h4 class="alert-heading">MESSAGE</h4>-->
-        {{ message }}
-        <br>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-
+{% block main %}
 
     <div id="TimeService">
         <img id="TimeServiceIcon" src="/static/images/yellowcircle.png" height="20" width="20">
@@ -222,16 +172,13 @@
 
     <div id="OtherLinks">
         <a href="/" class="btn btn-primary btn-space">Home</a>
-        <a href="{{cameraSiteAddress}}" class="btn btn-primary btn-space">Webcam Admin</a>
-        <a href="/logout" class="btn btn-primary btn-space">Logout</a>
         <a href="/history" class="btn btn-primary btn-space">History</a>
-
+        <a href="/logout" class="btn btn-primary btn-space">Logout</a>
     </div>
 
-</div>
 
 
-<script>
+    <script>
         var a=document.getElementById("TimeServiceMessage");
         var endSearch=a.innerHTML.indexOf("(");
         var substring=a.innerHTML.substring(0,endSearch)
@@ -245,7 +192,7 @@
         }
     </script>
 
-<script>
+    <script>
         var a=document.getElementById("ButtonServiceMessage");
         var endSearch=a.innerHTML.indexOf("(");
         var substring=a.innerHTML.substring(0,endSearch)
@@ -259,7 +206,7 @@
         }
     </script>
 
-<script>
+    <script>
         var a=document.getElementById("WebcamServiceMessage");
         var endSearch=a.innerHTML.indexOf("(");
         var substring=a.innerHTML.substring(0,endSearch)
@@ -273,7 +220,7 @@
         }
     </script>
 
-<script>
+    <script>
         var a=document.getElementById("sshServiceMessage");
         var endSearch=a.innerHTML.indexOf("(");
         var substring=a.innerHTML.substring(0,endSearch)
@@ -288,7 +235,7 @@
     </script>
 
 
-<script>
+    <script>
         function deleteRow(btn){
             var table=document.getElementById('userTable');
             var i=btn.parentNode.parentNode.rowIndex;
@@ -297,11 +244,4 @@
             document.myForm.submit();
         }
     </script>
-
-
-
-</body>
-
-
-
-</html>
+{% endblock %}
