@@ -24,6 +24,7 @@ try:
         cur = con.execute("""insert into feedtypes (feedtype,description) values ("2","Web Feed");""")
         cur = con.execute("""insert into feedtypes (feedtype,description) values ("3","Scheduled");""")
         cur = con.execute("""insert into feedtypes (feedtype,description) values ("4","Smart Home");""")
+        cur = con.execute("""insert into feedtypes (feedtype,description) values ("5","Repeat Schedule");""")
         cur = con.execute('''insert into user (username,email,pw_hash) values (?,?,?)''',['admin','',generate_password_hash('ChangeMe!')])
         cur = con.execute('''insert into feedtimes (feeddate,feedtype) select datetime('now'),1''')
         con.commit()

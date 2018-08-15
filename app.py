@@ -56,10 +56,12 @@ def home_page():
         for x in upcomingXNumberFeedTimes:
             x = list(x)
             dateobject = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
-            x[0] = dateobject.strftime("%m-%d-%y %I:%M %p")
-            x = tuple(x)
-            finalUpcomingFeedTimeList.append(x)
+            finalString=dateobject.strftime("%m-%d-%y %I:%M %p")
 
+            if x[1]=="Repeat Schedule":
+                finalString=finalString.replace("01-01-00", "Daily at")
+
+            finalUpcomingFeedTimeList.append(finalString)
 
         # latestXVideoFeedTimes
         latestXVideoFeedTimes = []
@@ -75,8 +77,8 @@ def home_page():
         latestXVideoFeedTimes = latestXVideoFeedTimes[:int(latestXNumberVideoFeedTimesValue)]
         latestXVideoFeedTimes=latestXVideoFeedTimes[::-1] #Reverse so newest first
 
-        #cameraStatusOutput = DetectCamera()
-        cameraStatusOutput = 'supported=0 detected=1'
+        cameraStatusOutput = DetectCamera()
+        # cameraStatusOutput = 'supported=0 detected=1'
         if "detected=1" not in cameraStatusOutput:
             cameraStatus='0'
         else:
@@ -154,9 +156,30 @@ def scheduleDatetime():
         timeobj = datetime.datetime.strptime(scheduleTime, '%H:%M').time()
 
         dateobject=datetime.datetime.combine(dateobj,timeobj)
-        # dateobject=datetime.datetime.strptime(scheduleDatetime,'%Y-%m-%dT%H:%M')
 
         dbInsert = commonTasks.db_insert_feedtime(dateobject, 0)
+        if dbInsert <> 'ok':
+            flash('Error! The time has not been scheduled! Error Message: ' + dbInsert,'error')
+            return redirect(url_for('home_page'))
+
+        flash("Time Scheduled")
+        return redirect(url_for('home_page'))
+    except Exception,e:
+        return render_template('error.html',resultsSET=e)
+
+
+@app.route('/scheduleRepeatingDatetime', methods=['GET', 'POST'])
+def scheduleRepeatingDatetime():
+    try:
+        scheduleRepeatingDate = '2000-01-01'
+        scheduleRepeatingTime = [request.form['scheduleRepeatingTime']][0]
+
+        dateobj = datetime.datetime.strptime(scheduleRepeatingDate, '%Y-%m-%d')
+        timeobj = datetime.datetime.strptime(scheduleRepeatingTime, '%H:%M').time()
+
+        dateobject = datetime.datetime.combine(dateobj, timeobj)
+
+        dbInsert = commonTasks.db_insert_feedtime(dateobject, 5)
         if dbInsert <> 'ok':
             flash('Error! The time has not been scheduled! Error Message: ' + dbInsert,'error')
             return redirect(url_for('home_page'))
@@ -170,14 +193,15 @@ def scheduleDatetime():
 @app.route('/deleteRow/<history>', methods=['GET', 'POST'])
 def deleteRow(history):
     try:
+        history = history.replace("Daily at","01-01-00")
         dateObj = datetime.datetime.strptime(history, "%m-%d-%y %I:%M %p")
+
         deleteRowFromDB=deleteUpcomingFeedingTime(str(dateObj))
         if deleteRowFromDB <> 'ok':
             flash('Error! The row has not been deleted! Error Message: ' + deleteRowFromDB,'error')
             return redirect(url_for('home_page'))
 
-        flash("Scheduled time "+str(history)+" deleted")
-
+        flash("Scheduled time "+str(history.replace("01-01-00","Daily at"))+" deleted")
 
         return redirect(url_for('home_page'))
 

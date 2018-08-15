@@ -123,14 +123,23 @@ while True:
 
             print 'Auto feed success!'
 
-            #Delete old scheduled records from DB
-            con = commonTasks.connect_db()
-            cur = con.execute("""delete from feedtimes where feeddate=?""", [str(x), ])
-            con.commit()
-            cur.close()
-            con.close()
+            #Delete one off scheduled feeds now. Keep reoccuring feed schedules in DB.
+            #Reoccuring daily feed times have date 2000-01-01 as placeholder in DB
+            #If x contains 2000-01-01 can assume it is a reoccuring schedule and can skip
+            if '2000-01-01' not in x:
+                # Not a scheduled time. Can delete
+                # Delete old scheduled records from DB
+                con = commonTasks.connect_db()
+                cur = con.execute("""delete from feedtimes where feeddate=?""", [str(x), ])
+                con.commit()
+                cur.close()
+                con.close()
 
-            print 'Deleted old record from DB'
+                print 'Deleted old record from DB'
+            else:
+                print 'Date contains 2000-01-01. This is date placeholder for scheduled daily feed times. Do not delete as scheduled will therefore be deleted. Deleted scheduled times through UI.'
+
+
 
             break
 

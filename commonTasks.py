@@ -58,8 +58,8 @@ def db_get_scheduled_feedtimes(numberToGet):
     cur = con.execute(''' select feeddate,description
                             from feedtimes ft
                             join feedtypes fty on ft.feedtype=fty.feedtype
-                            where ft.feedtype=0
-                            order by feeddate desc
+                            where ft.feedtype in (0,5)
+                            order by ft.feedtype desc,ft.feeddate desc
                         limit ?''', [str(numberToGet), ])
     LastFeedingTimes = cur.fetchall()
     cur.close()
