@@ -57,9 +57,8 @@ def home_page():
             x = list(x)
             dateobject = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
             finalString=dateobject.strftime("%m-%d-%y %I:%M %p")
-
-            if x[1]=="Repeat Schedule":
-                finalString=finalString.replace("01-01-00", "Daily at")
+            #2000-01-01 default placeholder date for daily reoccuring feeds
+            finalString=finalString.replace("01-01-00", "Daily at")
 
             finalUpcomingFeedTimeList.append(finalString)
 
