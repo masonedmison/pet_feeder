@@ -57,8 +57,10 @@ def home_page():
             x = list(x)
             dateobject = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
             finalString=dateobject.strftime("%m-%d-%y %I:%M %p")
-            #2000-01-01 default placeholder date for daily reoccuring feeds
-            finalString=finalString.replace("01-01-00", "Daily at")
+
+            #1900-01-01 default placeholder date for daily reoccuring feeds
+            if str(x[2])=='5': #Repeated schedule. Strip off Date
+                finalString=finalString.replace("01-01-00", "Daily at")
 
             finalUpcomingFeedTimeList.append(finalString)
 
@@ -170,15 +172,10 @@ def scheduleDatetime():
 @app.route('/scheduleRepeatingDatetime', methods=['GET', 'POST'])
 def scheduleRepeatingDatetime():
     try:
-        scheduleRepeatingDate = '2000-01-01'
         scheduleRepeatingTime = [request.form['scheduleRepeatingTime']][0]
-
-        dateobj = datetime.datetime.strptime(scheduleRepeatingDate, '%Y-%m-%d')
         timeobj = datetime.datetime.strptime(scheduleRepeatingTime, '%H:%M').time()
 
-        dateobject = datetime.datetime.combine(dateobj, timeobj)
-
-        dbInsert = commonTasks.db_insert_feedtime(dateobject, 5)
+        dbInsert = commonTasks.db_insert_feedtime(timeobj, 5)
         if dbInsert <> 'ok':
             flash('Error! The time has not been scheduled! Error Message: ' + dbInsert,'error')
             return redirect(url_for('home_page'))
@@ -192,15 +189,19 @@ def scheduleRepeatingDatetime():
 @app.route('/deleteRow/<history>', methods=['GET', 'POST'])
 def deleteRow(history):
     try:
-        history = history.replace("Daily at","01-01-00")
-        dateObj = datetime.datetime.strptime(history, "%m-%d-%y %I:%M %p")
+        if "Daily at" in history:
+            #Scheduled time switch back
+            history = history.replace("Daily at", "01-01-1900")
+            dateObj = datetime.datetime.strptime(history, "%m-%d-%Y %I:%M %p")
+        else:
+            dateObj = datetime.datetime.strptime(history, "%m-%d-%y %I:%M %p")
 
         deleteRowFromDB=deleteUpcomingFeedingTime(str(dateObj))
         if deleteRowFromDB <> 'ok':
             flash('Error! The row has not been deleted! Error Message: ' + deleteRowFromDB,'error')
             return redirect(url_for('home_page'))
 
-        flash("Scheduled time "+str(history.replace("01-01-00","Daily at"))+" deleted")
+        flash("Scheduled time deleted")
 
         return redirect(url_for('home_page'))
 

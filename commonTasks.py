@@ -1,6 +1,6 @@
 import sqlite3
 import ConfigParser
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 import time
 from Adafruit_CharLCD import Adafruit_CharLCD
 import datetime
@@ -44,7 +44,7 @@ def db_get_last_feedtimes(numberToGet):
     cur = con.execute(''' select feeddate,description
                             from feedtimes ft
                             join feedtypes fty on ft.feedtype=fty.feedtype
-                            where ft.feedtype<>0
+                            where ft.feedtype in (1,2,3,4)
                             order by feeddate desc
                             limit ?''', [str(numberToGet), ])
     LastFeedingTimes = cur.fetchall()
@@ -55,13 +55,26 @@ def db_get_last_feedtimes(numberToGet):
 
 def db_get_scheduled_feedtimes(numberToGet):
     con = connect_db()
-    cur = con.execute(''' select feeddate,description
+    cur = con.execute(''' select feeddate,description,ft.feedtype
                             from feedtimes ft
                             join feedtypes fty on ft.feedtype=fty.feedtype
                             where ft.feedtype in (0,5)
                             order by ft.feedtype desc,ft.feeddate desc
                         limit ?''', [str(numberToGet), ])
     LastFeedingTimes = cur.fetchall()
+    cur.close()
+    con.close()
+    return LastFeedingTimes
+
+
+def db_get_specific_scheduled_feedtime_by_date(date):
+    con = connect_db()
+    cur = con.execute(''' select feedid, feeddate, feedtype
+                            from feedtimes ft
+                            where feedtype in (3)
+                            and feeddate=?
+                        ''', [str(date), ])
+    LastFeedingTimes = cur.fetchone()
     cur.close()
     con.close()
     return LastFeedingTimes

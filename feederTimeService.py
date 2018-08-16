@@ -88,18 +88,36 @@ while True:
 
     #print "Begin checking if scheduled events."
     upcomingXNumberFeedTimes = commonTasks.db_get_scheduled_feedtimes(50)
-    finalUpcomingFeedTimeList = []
-    for x in upcomingXNumberFeedTimes:
-        x = list(x)
-        dateobject = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
-        x = tuple(x)
-        finalUpcomingFeedTimeList.append(x[0])
+    # finalUpcomingFeedTimeList = []
+    # for x in upcomingXNumberFeedTimes:
+    #     x = list(x)
+    #     dateobject = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
+    #     x = tuple(x)
+    #     finalUpcomingFeedTimeList.append(x[0])
 
-    for x in finalUpcomingFeedTimeList:
-        present = datetime.datetime.now()
-        value = datetime.datetime.strptime(x, '%Y-%m-%d %H:%M:%S')
-        c = present - value
-        d = divmod(c.days * 86400 + c.seconds, 60)
+    for x in upcomingXNumberFeedTimes:
+        if str(x[2])=='5':
+            #Scheduled time. Only compare current time against right 'now'
+            present = datetime.datetime.now() + datetime.timedelta(hours=24)
+            preValue = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
+            #Build current date value with scheduled time
+            value = datetime.datetime(present.year, present.month, present.day, preValue.hour, preValue.minute)
+            c = present - value
+            d = divmod(c.days * 86400 + c.seconds, 60)
+
+            #After scheduled time run once for today will keep running unless have a check in place
+            scheduledForToday = commonTasks.db_get_specific_scheduled_feedtime_by_date(value)
+            if scheduledForToday:
+                # Already ran for today, skip
+                d=(0,0)
+        else:
+            #Not a scheduled time compare whole date and time against right 'now'
+            present = datetime.datetime.now()
+            value = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
+            c = present - value
+            d = divmod(c.days * 86400 + c.seconds, 60)
+
+        print present, value, d[0],x
 
         if d[0] > 1:
             print 'Scheduled record found past due'
@@ -107,13 +125,12 @@ while True:
             print "Scheduled time: "+str(value)
             print "Minutes difference: "+str(d[0])
 
-            dateNowObject = datetime.datetime.now()
 
             spin = commonTasks.spin_hopper(hopperGPIO, hopperTime)
             if spin <> 'ok':
                 print 'Error! The ladies have not been feed! Error Message: ' + spin, 'error'
 
-            dbInsert = commonTasks.db_insert_feedtime(dateNowObject, 3)
+            dbInsert = commonTasks.db_insert_feedtime(value, 3)
             if dbInsert <> 'ok':
                 print 'Warning. Database did not update: ' + dbInsert, 'warning'
 
@@ -124,26 +141,25 @@ while True:
             print 'Auto feed success!'
 
             #Delete one off scheduled feeds now. Keep reoccuring feed schedules in DB.
-            #Reoccuring daily feed times have date 2000-01-01 as placeholder in DB
-            #If x contains 2000-01-01 can assume it is a reoccuring schedule and can skip
-            if '2000-01-01' not in x:
+            #Reoccuring daily feed times have date 1900-01-01 as placeholder in DB
+            if str(x[2]) == '5':
+                #Do not delete as scheduled will therefore be deleted. Deleted scheduled times through UI.
+                print 'Scheduled date. Do not delete'
+
+            else:
                 # Not a scheduled time. Can delete
                 # Delete old scheduled records from DB
                 con = commonTasks.connect_db()
-                cur = con.execute("""delete from feedtimes where feeddate=?""", [str(x), ])
+                cur = con.execute("""delete from feedtimes where feeddate=? and feedid in (0)""", [str(x[0]), ])
                 con.commit()
                 cur.close()
                 con.close()
 
                 print 'Deleted old record from DB'
-            else:
-                print 'Date contains 2000-01-01. This is date placeholder for scheduled daily feed times. Do not delete as scheduled will therefore be deleted. Deleted scheduled times through UI.'
-
-
 
             break
 
-    #Remove files older then specified days
+    #Remove video files older then specified days
     now = time.time()
     nowMinusSpecifiedDays = now - int(nowMinusXDays) * 86400
     # Loop and remove
