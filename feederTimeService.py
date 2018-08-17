@@ -96,28 +96,29 @@ while True:
     #     finalUpcomingFeedTimeList.append(x[0])
 
     for x in upcomingXNumberFeedTimes:
+        print "-----------------------"
         if str(x[2])=='5':
-            #Scheduled time. Only compare current time against right 'now'
-            present = datetime.datetime.now() + datetime.timedelta(hours=24)
+            #print 'Scheduled time. Only compare current time against right now'
+            present = datetime.datetime.now() #+ datetime.timedelta(hours=24)
             preValue = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
             #Build current date value with scheduled time
             value = datetime.datetime(present.year, present.month, present.day, preValue.hour, preValue.minute)
             c = present - value
             d = divmod(c.days * 86400 + c.seconds, 60)
 
-            #After scheduled time run once for today will keep running unless have a check in place
+            #print 'After scheduled time run once for today will keep running unless have a check in place'
             scheduledForToday = commonTasks.db_get_specific_scheduled_feedtime_by_date(value)
             if scheduledForToday:
-                # Already ran for today, skip
+                print 'Already ran for today, skip'
                 d=(0,0)
         else:
-            #Not a scheduled time compare whole date and time against right 'now'
+            #print 'Not a scheduled time compare whole date and time against right now'
             present = datetime.datetime.now()
             value = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
             c = present - value
             d = divmod(c.days * 86400 + c.seconds, 60)
 
-        print present, value, d[0],x
+        #print present, value, d[0],x
 
         if d[0] > 1:
             print 'Scheduled record found past due'
@@ -128,15 +129,15 @@ while True:
 
             spin = commonTasks.spin_hopper(hopperGPIO, hopperTime)
             if spin <> 'ok':
-                print 'Error! The ladies have not been feed! Error Message: ' + spin, 'error'
+                print 'Error! The ladies have not been feed! Error Message: ' + str(spin), 'error'
 
             dbInsert = commonTasks.db_insert_feedtime(value, 3)
             if dbInsert <> 'ok':
-                print 'Warning. Database did not update: ' + dbInsert, 'warning'
+                print 'Warning. Database did not update: ' + str(dbInsert), 'warning'
 
             updatescreen = commonTasks.print_to_LCDScreen(commonTasks.get_last_feedtime_string())
             if updatescreen <> 'ok':
-                print 'Warning. Screen feedtime did not update: ' + updatescreen
+                print 'Warning. Screen feedtime did not update: ' + str(updatescreen)
 
             print 'Auto feed success!'
 
@@ -150,14 +151,15 @@ while True:
                 # Not a scheduled time. Can delete
                 # Delete old scheduled records from DB
                 con = commonTasks.connect_db()
-                cur = con.execute("""delete from feedtimes where feeddate=? and feedid in (0)""", [str(x[0]), ])
+                cur = con.execute("""delete from feedtimes where feeddate=? and feedtype in (0)""", [str(x[0]), ])
                 con.commit()
                 cur.close()
                 con.close()
 
                 print 'Deleted old record from DB'
-
+            print "-----------------------"
             break
+        
 
     #Remove video files older then specified days
     now = time.time()

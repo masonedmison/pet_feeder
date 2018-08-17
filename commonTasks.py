@@ -1,6 +1,6 @@
 import sqlite3
 import ConfigParser
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 from Adafruit_CharLCD import Adafruit_CharLCD
 import datetime
