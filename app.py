@@ -80,10 +80,10 @@ def home_page():
 
         cameraStatusOutput = DetectCamera()
         # cameraStatusOutput = 'supported=0 detected=1'
-        if "detected=1" not in cameraStatusOutput:
-            cameraStatus='0'
-        else:
+        if "detected=1" in cameraStatusOutput:
             cameraStatus='1'
+        else:
+            cameraStatus='0'
 
         #Return page
         return render_template('home.html',latestXNumberFeedTimes=finalFeedTimeList
@@ -104,19 +104,20 @@ def feedbuttonclick():
 
         spin = commonTasks.spin_hopper(hopperGPIO, hopperTime)
         if spin <> 'ok':
-            flash('Error! The ladies have not been feed! Error Message: ' + spin,'error')
+            flash('Error! No feed activated! Error Message: ' + str(spin),'error')
             return redirect(url_for('home_page'))
 
-        dbInsert=commonTasks.db_insert_feedtime(dateNowObject,2)
+        dbInsert=commonTasks.db_insert_feedtime(dateNowObject,2) #FeedType 2=Button Click
         if dbInsert <> 'ok':
-            flash('Warning. Database did not update: '+dbInsert,'warning')
+            flash('Warning. Database did not update: '+str(dbInsert),'warning')
+            return redirect(url_for('home_page'))
 
         updatescreen = commonTasks.print_to_LCDScreen(commonTasks.get_last_feedtime_string())
         if updatescreen <> 'ok':
-            flash('Warning. Screen feedtime did not update: '+updatescreen)
+            flash('Warning. Screen feedtime did not update: '+str(updatescreen),'warning')
+            return redirect(url_for('home_page'))
 
         flash('Feed success!')
-
         return redirect(url_for('home_page'))
     except Exception,e:
         return render_template('error.html',resultsSET=e)
@@ -129,19 +130,18 @@ def feedbuttonclickSmartHome():
 
         spin = commonTasks.spin_hopper(hopperGPIO, hopperTime)
         if spin <> 'ok':
-            flash('Error! The ladies have not been feed! Error Message: ' + spin,'error')
+            flash('Error! No feed activated! Error Message: ' + str(spin),'error')
             return redirect(url_for('home_page'))
 
-        dbInsert=commonTasks.db_insert_feedtime(dateNowObject,4)
+        dbInsert=commonTasks.db_insert_feedtime(dateNowObject,4) #FeedType 4=Smart Home
         if dbInsert <> 'ok':
-            flash('Warning. Database did not update: '+dbInsert,'warning')
+            flash('Warning. Database did not update: '+str(dbInsert),'warning')
 
         updatescreen = commonTasks.print_to_LCDScreen(commonTasks.get_last_feedtime_string())
         if updatescreen <> 'ok':
-            flash('Warning. Screen feedtime did not update: '+updatescreen)
+            flash('Warning. Screen feedtime did not update: '+str(updatescreen),'warning')
 
         flash('Feed success!')
-
         return redirect(url_for('home_page'))
     except Exception,e:
         return render_template('error.html',resultsSET=e)
@@ -158,9 +158,9 @@ def scheduleDatetime():
 
         dateobject=datetime.datetime.combine(dateobj,timeobj)
 
-        dbInsert = commonTasks.db_insert_feedtime(dateobject, 0)
+        dbInsert = commonTasks.db_insert_feedtime(dateobject, 0) #FeedType 0=One Time Scheduled Feed
         if dbInsert <> 'ok':
-            flash('Error! The time has not been scheduled! Error Message: ' + dbInsert,'error')
+            flash('Error! The time has not been scheduled! Error Message: ' + str(dbInsert),'error')
             return redirect(url_for('home_page'))
 
         flash("Time Scheduled")
@@ -175,9 +175,9 @@ def scheduleRepeatingDatetime():
         scheduleRepeatingTime = [request.form['scheduleRepeatingTime']][0]
         timeobj = datetime.datetime.strptime(scheduleRepeatingTime, '%H:%M').time()
 
-        dbInsert = commonTasks.db_insert_feedtime(timeobj, 5)
+        dbInsert = commonTasks.db_insert_feedtime(timeobj, 5) #FeedType 5=Repeat Daily Scheduled Feed
         if dbInsert <> 'ok':
-            flash('Error! The time has not been scheduled! Error Message: ' + dbInsert,'error')
+            flash('Error! The time has not been scheduled! Error Message: ' + str(dbInsert),'error')
             return redirect(url_for('home_page'))
 
         flash("Time Scheduled")
@@ -198,11 +198,10 @@ def deleteRow(history):
 
         deleteRowFromDB=deleteUpcomingFeedingTime(str(dateObj))
         if deleteRowFromDB <> 'ok':
-            flash('Error! The row has not been deleted! Error Message: ' + deleteRowFromDB,'error')
+            flash('Error! The row has not been deleted! Error Message: ' + str(deleteRowFromDB),'error')
             return redirect(url_for('home_page'))
 
         flash("Scheduled time deleted")
-
         return redirect(url_for('home_page'))
 
     except Exception,e:
@@ -217,7 +216,7 @@ def deleteUpcomingFeedingTime(dateToDate):
         con.close()
         return 'ok'
     except Exception, e:
-        return render_template('error.html', resultsSET=e)
+        return e.message
 
 
 @app.route('/video/<videoid>', methods=['GET', 'POST'])
@@ -245,7 +244,7 @@ def DetectCamera():
                                    stderr=subprocess.STDOUT)
         return process.stdout.read()
     except Exception,e:
-        return e
+        return e.message
 
 ######################################################################################
 ##########################################ADMIN PAGE##################################
@@ -366,9 +365,9 @@ def admin_page():
             return render_template('admin.html'
                                    ,buttonServiceFinalStatus=buttonServiceFinalStatus
                                    ,timeServiceFinalStatus=timeServiceFinalStatus
-                                   ,invalidLogins=invalidLogins
                                    ,sshServiceFinalStatus=sshServiceFinalStatus
                                    ,webcameraServiceFinalStatus=webcameraServiceFinalStatus
+                                   ,invalidLogins=invalidLogins
                                    ,userLogins=userLogins
                                    )
 

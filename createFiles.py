@@ -62,4 +62,4 @@ Secretkey=SUPER_SECRET_KEY
         print ('app.cfg created')
 
 except Exception as e:
-    print ('Error: '+str(e))
+    print ('Error: '+str(e.message))

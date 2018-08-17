@@ -78,10 +78,14 @@ class GracefulKiller:
 print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 print("Starting up")
 
-print("Print welcome and Last feed time")
 welcomeMessage = commonTasks.print_to_LCDScreen("Welcome!")
 time.sleep(1)
-lastFeedTime = commonTasks.print_to_LCDScreen(commonTasks.get_last_feedtime_string())
+print "Welcome message return status: "+str(welcomeMessage)
+
+screenMessage = commonTasks.get_last_feedtime_string()
+print "Screen message to print: " + str(screenMessage)
+lastFeedTime = commonTasks.print_to_LCDScreen(screenMessage)
+print "Message display return status: " + str(lastFeedTime)
 
 print("Create Gracekiller class")
 killer = GracefulKiller()
@@ -114,13 +118,13 @@ while True:
                 print "Feed times closure than "+str(delayBetweenButtonPushes)+ " seconds. Hold off for now."
             else:
                 spin=commonTasks.spin_hopper(hopperGPIO,hopperTime)
-                print "End Hopper return status: "+spin
+                print "End Hopper return status: "+str(spin)
                 dblog=commonTasks.db_insert_feedtime(buttonPressDatetime,1)
-                print "End DB Insert return status: "+dblog
+                print "End DB Insert return status: "+str(dblog)
                 updatescreen=commonTasks.print_to_LCDScreen(commonTasks.get_last_feedtime_string())
-                print "End Message Display return status: " + updatescreen
-            print "-------------------------------------------------------------------------"
+                print "End Message Display return status: " + str(updatescreen)
+
     if killer.kill_now:break
-print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-print "End of the program. I was killed gracefully :)"
-print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+print "End of the program loop. Killed gracefully"
+print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"

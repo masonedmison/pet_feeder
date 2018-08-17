@@ -82,23 +82,18 @@ killer = GracefulKiller()
 print("End Start up. Starting while loop")
 print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 while True:
+    print "-----------------------"
 
-    updatescreen = commonTasks.print_to_LCDScreen(commonTasks.get_last_feedtime_string())
-    #print "Message Display return status: " + updatescreen
+    screenMessage= commonTasks.get_last_feedtime_string()
+    print "Screen message to print: " + str(screenMessage)
+    updatescreen = commonTasks.print_to_LCDScreen(str(screenMessage))
+    print "Message display return status: " + str(updatescreen)
 
     #print "Begin checking if scheduled events."
     upcomingXNumberFeedTimes = commonTasks.db_get_scheduled_feedtimes(50)
-    # finalUpcomingFeedTimeList = []
-    # for x in upcomingXNumberFeedTimes:
-    #     x = list(x)
-    #     dateobject = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
-    #     x = tuple(x)
-    #     finalUpcomingFeedTimeList.append(x[0])
-
     for x in upcomingXNumberFeedTimes:
-        print "-----------------------"
         if str(x[2])=='5':
-            #print 'Scheduled time. Only compare current time against right now'
+            print 'Repeating scheduled time'
             present = datetime.datetime.now() #+ datetime.timedelta(hours=24)
             preValue = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
             #Build current date value with scheduled time
@@ -112,7 +107,7 @@ while True:
                 print 'Already ran for today, skip'
                 d=(0,0)
         else:
-            #print 'Not a scheduled time compare whole date and time against right now'
+            print 'One off scheduled time'
             present = datetime.datetime.now()
             value = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
             c = present - value
@@ -126,20 +121,19 @@ while True:
             print "Scheduled time: "+str(value)
             print "Minutes difference: "+str(d[0])
 
-
             spin = commonTasks.spin_hopper(hopperGPIO, hopperTime)
             if spin <> 'ok':
-                print 'Error! The ladies have not been feed! Error Message: ' + str(spin), 'error'
+                print 'Error! Feeder not activated! Error Message: ' + str(spin)
 
             dbInsert = commonTasks.db_insert_feedtime(value, 3)
             if dbInsert <> 'ok':
-                print 'Warning. Database did not update: ' + str(dbInsert), 'warning'
+                print 'Warning. Database did not update: ' + str(dbInsert)
 
             updatescreen = commonTasks.print_to_LCDScreen(commonTasks.get_last_feedtime_string())
             if updatescreen <> 'ok':
                 print 'Warning. Screen feedtime did not update: ' + str(updatescreen)
 
-            print 'Auto feed success!'
+            print 'Auto feed success'
 
             #Delete one off scheduled feeds now. Keep reoccuring feed schedules in DB.
             #Reoccuring daily feed times have date 1900-01-01 as placeholder in DB
@@ -155,9 +149,8 @@ while True:
                 con.commit()
                 cur.close()
                 con.close()
-
                 print 'Deleted old record from DB'
-            print "-----------------------"
+
             break
         
 
@@ -167,15 +160,16 @@ while True:
     # Loop and remove
     for f in os.listdir(motionVideoDirPath):
         if f != '.gitkeep':
-                f = os.path.join(motionVideoDirPath, f)
-                if os.stat(f).st_mtime < nowMinusSpecifiedDays:
-                    if os.path.isfile(f):
-                        print 'removing file: '+str(f)
-                        os.remove(os.path.join(motionVideoDirPath, f))
+            f = os.path.join(motionVideoDirPath, f)
+            if os.stat(f).st_mtime < nowMinusSpecifiedDays:
+                if os.path.isfile(f):
+                    os.remove(os.path.join(motionVideoDirPath, f))
+                    print 'Removed old video file: '+str(f)
 
+    #Wait specified time before starting again
     time.sleep(float(secondDelay))
     if killer.kill_now:break
 
-print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-print "End of the program. I was killed gracefully :)"
-print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+print "End of the program. Killed gracefully"
+print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
