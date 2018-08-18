@@ -82,18 +82,18 @@ killer = GracefulKiller()
 print("End Start up. Starting while loop")
 print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 while True:
-    print "-----------------------"
+    print "--------------------------------------------------------------"
 
     screenMessage= commonTasks.get_last_feedtime_string()
-    print "Screen message to print: " + str(screenMessage)
+    #print "Screen message to print: " + str(screenMessage)
     updatescreen = commonTasks.print_to_LCDScreen(str(screenMessage))
-    print "Message display return status: " + str(updatescreen)
+    #print "Message display return status: " + str(updatescreen)
 
     #print "Begin checking if scheduled events."
     upcomingXNumberFeedTimes = commonTasks.db_get_scheduled_feedtimes(50)
     for x in upcomingXNumberFeedTimes:
         if str(x[2])=='5':
-            print 'Repeating scheduled time'
+            print 'Repeating scheduled time '+str(x[0])
             present = datetime.datetime.now() #+ datetime.timedelta(hours=24)
             preValue = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
             #Build current date value with scheduled time
@@ -107,11 +107,14 @@ while True:
                 print 'Already ran for today, skip'
                 d=(0,0)
         else:
-            print 'One off scheduled time'
+            print 'One off scheduled time '+str(x[0])
             present = datetime.datetime.now()
             value = datetime.datetime.strptime(x[0], '%Y-%m-%d %H:%M:%S')
             c = present - value
             d = divmod(c.days * 86400 + c.seconds, 60)
+            if d[0] < 1:
+                    print 'Not past due yet'
+ 
 
         #print present, value, d[0],x
 
@@ -170,6 +173,6 @@ while True:
     time.sleep(float(secondDelay))
     if killer.kill_now:break
 
-print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 print "End of the program. Killed gracefully"
-print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
