@@ -5,6 +5,7 @@ import subprocess
 import sqlite3
 import os
 from werkzeug import generate_password_hash
+import datetime
 
 try:
     dbPath='/var/www/feeder/feeder/feeder.db'
@@ -26,7 +27,9 @@ try:
         cur = con.execute("""insert into feedtypes (feedtype,description) values ("4","Smart Home");""")
         cur = con.execute("""insert into feedtypes (feedtype,description) values ("5","Repeat Schedule To Run");""")
         cur = con.execute('''insert into user (username,email,pw_hash) values (?,?,?)''',['admin','',generate_password_hash('ChangeMe!')])
-        cur = con.execute('''insert into feedtimes (feeddate,feedtype) select datetime('now'),1''')
+        nowDate=datetime.datetime.now()
+        currentTimeString=nowDate.strftime("%Y-%m-%d %H:%M:%S")
+        cur = con.execute('''insert into feedtimes (feeddate,feedtype) values (?,1)''',[currentTimeString,])
         con.commit()
         cur.close()
         con.close()
