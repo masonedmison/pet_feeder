@@ -42,8 +42,7 @@ try:
         print ('Creating app.cfg. Please wait.')
         f = open(appCFGPath, "w+")
 
-        f.write("""
-[feederConfig]
+        f.write("""[feederConfig]
 Database_Location=/var/www/feeder/feeder/feeder.db
 Feed_Button_GPIO_Pin=12
 Hopper_GPIO_Pin=11
