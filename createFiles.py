@@ -33,8 +33,9 @@ try:
         con.commit()
         cur.close()
         con.close()
-        process = subprocess.Popen(["sudo", "chmod", "777", "-R", "/var/www/feeder"],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-        print ('DB created')
+        #process = subprocess.Popen(["sudo", "chmod", "777", "-R", "/var/www/feeder"],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        os.chmod(dbPath, 0o777)
+	print ('DB created')
 
     if os.path.isfile(appCFGPath):
         print ('app.cfg already exists. To create again first delete current copy')
@@ -61,6 +62,7 @@ Secretkey=SUPER_SECRET_KEY
 """)
 
         f.close()
+        os.chmod(appCFGPath, 0o777)
         print ('app.cfg created')
 
 except Exception as e:
