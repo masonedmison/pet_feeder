@@ -19,75 +19,18 @@
 4. Update system
     * Run following commands to from terminal to update system
         * This may take awhile. Can be run later if needed
+    
     ```shell
     sudo apt-get update
     sudo apt-get upgrade
     ```
 
-3. Update system
-   1. Like this:
-        ```shell
-        printf("Hello, World!");
-        ```
-        
-3. We can put fenced code blocks inside nested bullets, too.3
-   1. Like this:
-        
-        ```shell
-        printf("Hello, World!");
-        ```
-
-
-        
-3. We can put fenced code blocks inside nested bullets, too.2
-   - Like this:
-        
-        ```shell
-        printf("Hello, World!");
-        ```
-
-3. We can put fenced code blocks inside nested bullets, too.1
-   * Like this:
-        
-        ```shell
-        printf("Hello, World!");
-        ```
-
-
-3. We can put fenced code blocks inside nested bullets, too.11
-   * Like this:        
-        ```shell
-        printf("Hello, World!");
-        ```
-
-
-3. We can put fenced code blocks inside nested bullets, too.22
-   * Like this:        
-        ```shell
-        printf("Hello, World!");
-        ```
-   * Like this:        
-        ```shell
-        printf("Hello, World!");
-        ```
-
-
-3. We can put fenced code blocks inside nested bullets, too.33
-   * Like this:        
-        
-        ```shell
-        printf("Hello, World!");
-        ```
-   * Like this:        
-        
-        ```shell
-        printf("Hello, World!");
-        ```
 
 
 
 5. Remove bloatware
     - Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
+    
     ```shell
     sudo apt-get purge wolfram-engine
     sudo apt-get purge sonic-pi
@@ -97,11 +40,13 @@
     sudo apt-get autoremove
     ```
     - Restart machine
+    
     ```shell
     sudo reboot
     ```
 
 6. Install additional software
+    
     ```shell
     sudo apt-get install python-dev
     sudo apt-get install git
