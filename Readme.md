@@ -173,7 +173,7 @@ sudo apt-get autoremove
     ```
 
 3. We can put fenced code blocks inside nested bullets, too.
-   1. Like this:
+   * Like this:
 
         ```shell
         sudo apt-get purge wolfram-engine
@@ -181,8 +181,28 @@ sudo apt-get autoremove
         sudo apt-get purge wolfram-enginezz
         ```
 
-   2. The key is to indent your fenced block by **(4 * bullet_indent_level)** spaces.
-   3. Also need to put a separating newline above and below the fenced block.
+   * Also need to put a separating newline above and below the fenced block.
+
+
+
+3. We can put fenced code blocks inside nested bullets, too.1111
+* Like this:
+
+    ```shell
+    sudo apt-get purge wolfram-engine
+    sudo apt-get purge wolfram-enginez
+    sudo apt-get purge wolfram-enginezz
+    ```
+
+* Also need to put a separating newline above and below the fenced block.
+    ```shell
+    sudo apt-get purge wolfram-engine
+    sudo apt-get purge wolfram-enginez
+    sudo apt-get purge wolfram-enginezz
+    ```
+
+
+
 
 
 
