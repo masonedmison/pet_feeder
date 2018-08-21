@@ -61,6 +61,7 @@
 
 7. Set up feeder website
     - From terminal
+    
     ```shell
     sudo mkdir /var/www
     sudo chmod 777 -R /var/www
@@ -77,15 +78,18 @@
     
 8. Set up permissions 
     - From terminal open Sudoers file
+    
     ```shell
     sudo visudo
     ```
     - Add under section "Allow members of group sudo to execute any command"
+    
     ```text
     www-data ALL=(root) NOPASSWD: ALL
     ```
     - Exit file: Ctrl-x> 'Y'> Enter to confirm
     - From terminal
+    
     ```shell
     sudo usermod -a -G gpio www-data
     sudo usermod -aG video www-data
@@ -94,10 +98,12 @@
 
 9. Configure Apache
     - From terminal
+    
     ```shell
     sudo nano /etc/apache2/sites-available/000-default.conf
     ```
     - Replace file with following. Update ServerName as needed.
+    
     ```text
     Listen 80
     NameVirtualHost *:80
@@ -121,6 +127,7 @@
 
 10. Setup feeder background button service
     - From terminal
+    
     ```shell
     sudo cp /var/www/feeder/feeder/feederButtonService.sh /etc/init.d/
     cd /etc/init.d/
@@ -131,6 +138,7 @@
 
 11. Setup feeder background time service
     - From terminal
+    
     ```shell
     sudo cp /var/www/feeder/feeder/feederTimeService.sh /etc/init.d/
     cd /etc/init.d/
@@ -140,16 +148,19 @@
     ```
 
 12. Restart system
+    
     ```shell
     sudo reboot
     ```
 
 13. Configure Logrotate
     - From terminal
+    
     ```shell
     sudo nano /etc/logrotate.d/apache2
     ```
     - Append to bottom of file
+    
     ```text
     /var/www/feeder/feeder/logs/apacheAccess.log
     /var/www/feeder/feeder/logs/apacheError.log
@@ -164,6 +175,7 @@
     ```
     - Exit file: Ctrl-x> 'Y'> Enter to confirm
     - Note: To force run a test to ensure logs are rotating correctly execute following from terminal
+    
     ```shell
     sudo logrotate --force /etc/logrotate.d
     ```
@@ -186,6 +198,7 @@
 
 15. Configure router to assign static internal IP to pi
     - From terminal type
+    
     ```shell
     ifconfig
     ```
@@ -214,32 +227,38 @@
     - Next click on install on top navagation bar
     - Select pi from 'operating systems' section and the new subdomain from drop down
     - Copy long string from the output section 
+    
     ```text
     echo url="https://www.duckdns.org/update?domains=petfeeder&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
     ```
     - From home directory (ex. /home/pi) open terminal
+    
     ```shell
     mkdir duckdns 
     cd duckdns
     sudo nano duck.sh
     ```
     - Paster text copied above into duck.sh 
+    
     ```text
     echo url="https://www.duckdns.org/update?domains=petfeeder&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
     ```
     - Exit file: Ctrl-x> 'Y'> Enter to confirm
     - From terminal
+    
     ```shell
     sudo chmod 777 -R /home/pi/duckdns
     crontab -e
     ```
     -Select 2 if prompted
     -Paster following into file
+    
     ```text
     */5 * * * * /home/pi/duckdns/duck.sh >/dev/null 2>&1
     ```
     - Exit file: Ctrl-x> 'Y'> Enter to confirm
     - To test run from home directory terminal
+    
     ```shell
     ./duck.sh
     sudo service cron start
@@ -262,6 +281,7 @@
     - If have camera installed on pi the following steps will configure software to capture video
         - Pet feeder site is designed to work with motion IO only as of now
     - To set up motion IO, from terminal home directory (ex. /home/pi)
+    
     ```shell
     wget github.com/Motion-Project/motion/releases/download/release-4.1.1/pi_jessie_motion_4.1.1-1_armhf.deb
     sudo apt-get install gdebi-core
@@ -283,27 +303,33 @@
     stream_localhost on > stream_localhost off
     ```
     - Open /etc/modules-load.d /etc/modules
+    
     ```shell
     sudo nano /etc/modules
     ``` 
     - Add line
+    
     ```text
     bcm2835-v4l2
     ```
     - From terminal open
+    
     ```shell
     sudo nano /etc/rc.local
     ```
     - Add command below the comment, but leave the line exit 0 at the end
+   	
    	```text
    	motion -c /home/pi/.motion/motion.conf
    	```
 
     - To disable pi camera red light, from terminal
+    
     ```shell
     sudo nano /boot/config.txt
     ```
     - Add to last line
+    
     ```text
     disable_camera_led=1
     ```
