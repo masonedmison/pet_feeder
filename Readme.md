@@ -18,15 +18,12 @@
     
 4. Update system
     - Run following commands to from terminal to update system
-        - This may take awhile. Can be run later if needed
+        - ***This may take awhile. Can be run later if needed***
     
     ```shell
     sudo apt-get update
     sudo apt-get upgrade
     ```
-
-
-
 
 5. Remove bloatware
     - Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
@@ -184,11 +181,11 @@
 
 14. Verify feeder site is working
     - Open internet browser
-    - Type [127.0.0.1](http://127.0.0.1/) into navagation bar
+    - Type [127.0.0.1](http://127.0.0.1/) into navigation bar
     - Verify website shows up 
     - Click feed now button and verify feed time is poplated in site
         - Nothing else will happen if hardware is not connected yet
-    - Type [127.0.0.1/admin](127.0.0.1/admin) into navagation bar
+    - Type [127.0.0.1/admin](127.0.0.1/admin) into navigation bar
         - Default user/password is admin/ChangeMe!
         - Under 'user logins' click add user
         - Enter user name and secure password
