@@ -18,11 +18,19 @@
     
 4. Update system
     * Run following commands to from terminal to update system
-        - ***This may take awhile. Can be run later.***
+        * This may take awhile. Can be run later if needed
     ```shell
     sudo apt-get update
     sudo apt-get upgrade
     ```
+
+3. Update system
+   * Like this:
+        ```shell
+        printf("Hello, World!");
+        ```
+
+
 
 5. Remove bloatware
     - Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
