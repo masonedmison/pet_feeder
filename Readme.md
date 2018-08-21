@@ -33,7 +33,7 @@
     sudo apt-get purge libreoffice*
     sudo apt-get clean
     sudo apt-get autoremove
-    ````
+    ```
     - Restart machine
     ```shell
     sudo reboot
