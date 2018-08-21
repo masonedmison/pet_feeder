@@ -42,7 +42,7 @@
     ```
 
 
-5. Remove bloatware
+6. Remove bloatware
     - Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
 ```shell
 sudo apt-get purge wolfram-engine
@@ -53,7 +53,7 @@ sudo apt-get clean
 sudo apt-get autoremove
 ```
 
-5. Remove bloatware
+7. Remove bloatware3
 - Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
 ```shell
 sudo apt-get purge wolfram-engine
@@ -63,6 +63,50 @@ sudo apt-get purge libreoffice*
 sudo apt-get clean
 sudo apt-get autoremove
 ```
+
+7. Remove bloatware4
+    - Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
+    ```shell
+    sudo apt-get purge wolfram-engine
+    sudo apt-get purge sonic-pi
+    sudo apt-get purge minecraft-pi
+    sudo apt-get purge libreoffice*
+    sudo apt-get clean
+    sudo apt-get autoremove
+    ```
+
+
+8. Remove bloatware1
+* Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
+```shell
+sudo apt-get purge wolfram-engine
+sudo apt-get purge sonic-pi
+sudo apt-get purge minecraft-pi
+sudo apt-get purge libreoffice*
+sudo apt-get clean
+sudo apt-get autoremove
+```
+* Restart machine
+```shell
+sudo reboot
+```
+
+
+8. Remove bloatware2
+    * Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
+    ```shell
+    sudo apt-get purge wolfram-engine
+    sudo apt-get purge sonic-pi
+    sudo apt-get purge minecraft-pi
+    sudo apt-get purge libreoffice*
+    sudo apt-get clean
+    sudo apt-get autoremove
+    ```
+    * Restart machine
+    ```shell
+    sudo reboot
+    ```
+
 
 
 5. reeeeeeeeeeeeeeeeeeee
