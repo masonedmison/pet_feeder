@@ -27,7 +27,7 @@
     ```
 
 5. Remove bloatware
-    - Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space
+    - Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
     ```shell
     sudo apt-get purge wolfram-engine
     sudo apt-get purge sonic-pi
