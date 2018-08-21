@@ -17,8 +17,8 @@
         - Enable VNC and Remote GPIO
     
 4. Update system
-    * Run following commands to from terminal to update system
-        * This may take awhile. Can be run later if needed
+    - Run following commands to from terminal to update system
+        - This may take awhile. Can be run later if needed
     
     ```shell
     sudo apt-get update
@@ -322,12 +322,13 @@
    	```text
    	motion -c /home/pi/.motion/motion.conf
    	```
-    
+   	
     - To disable pi camera red light, from terminal
     
     ```shell
     sudo nano /boot/config.txt
     ```
+    
     - Add to last line
     
     ```text
