@@ -107,6 +107,20 @@ sudo reboot
     sudo reboot
     ```
 
+8. Remove bloatware22
+    * Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
+```shell
+sudo apt-get purge wolfram-engine
+sudo apt-get purge sonic-pi
+sudo apt-get purge minecraft-pi
+sudo apt-get purge libreoffice*
+sudo apt-get clean
+sudo apt-get autoremove
+    ```
+    * Restart machine
+```shell
+sudo reboot
+```
 
 
 5. reeeeeeeeeeeeeeeeeeee
