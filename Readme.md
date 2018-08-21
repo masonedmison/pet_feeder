@@ -41,6 +41,30 @@
     sudo reboot
     ```
 
+
+5. Remove bloatware
+    - Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
+```shell
+sudo apt-get purge wolfram-engine
+sudo apt-get purge sonic-pi
+sudo apt-get purge minecraft-pi
+sudo apt-get purge libreoffice*
+sudo apt-get clean
+sudo apt-get autoremove
+```
+
+5. Remove bloatware
+- Not required step. Can be skipped. Removes unneeded software that takes up alot of SD card space  
+```shell
+sudo apt-get purge wolfram-engine
+sudo apt-get purge sonic-pi
+sudo apt-get purge minecraft-pi
+sudo apt-get purge libreoffice*
+sudo apt-get clean
+sudo apt-get autoremove
+```
+
+
 5. reeeeeeeeeeeeeeeeeeee
      ```shell
     sudo reboot
