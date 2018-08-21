@@ -17,7 +17,7 @@
         - Enable VNC and Remote GPIO
     
 4. Update system
-    - Run following commands to from terminal to update system
+    * Run following commands to from terminal to update system
         - ***This may take awhile. Can be run later.***
     ```shell
     sudo apt-get update
