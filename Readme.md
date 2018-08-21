@@ -321,8 +321,7 @@
     
     ```shell
     sudo nano /etc/modules
-    ``` 
-   	
+    ```
     - Open /etc/modules-load.d /etc/modules
     
     ```shell
