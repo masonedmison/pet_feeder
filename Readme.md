@@ -317,22 +317,21 @@
     ```shell
     sudo nano /etc/rc.local
     ```
-    - Open /etc/modules-load.d /etc/modules
-    
-    ```shell
-    sudo nano /etc/modules
-    ```
+    - Add command below the comment, but leave the line exit 0 at the end
    	
-    - Open /etc/modules-load.d /etc/modules
+   	```text
+   	motion -c /home/pi/.motion/motion.conf
+   	```
+
+    - To disable pi camera red light, from terminal
     
     ```shell
-    sudo nano /etc/modules
+    sudo nano /boot/config.txt
     ```
+    - Add to last line
     
-    - Open /etc/modules-load.d /etc/modules
-    
-    ```shell
-    sudo nano /etc/modules
+    ```text
+    disable_camera_led=1
     ```
 
 
