@@ -306,7 +306,7 @@
     
     ```shell
     sudo nano /etc/modules
-    ``` 
+    ```
     - Add line
     
     ```text
@@ -322,18 +322,18 @@
     ```shell
     sudo nano /etc/modules
     ```
+   	
     - Open /etc/modules-load.d /etc/modules
     
     ```shell
     sudo nano /etc/modules
-    ``` 
+    ```
     
     - Open /etc/modules-load.d /etc/modules
     
     ```shell
     sudo nano /etc/modules
-    ``` 
-
+    ```
 
 
 
