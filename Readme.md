@@ -175,8 +175,10 @@ sudo apt-get autoremove
 3. We can put fenced code blocks inside nested bullets, too.
    1. Like this:
 
-        ```c
-        printf("Hello, World!");
+        ```shell
+        sudo apt-get purge wolfram-engine
+        sudo apt-get purge wolfram-enginez
+        sudo apt-get purge wolfram-enginezz
         ```
 
    2. The key is to indent your fenced block by **(4 * bullet_indent_level)** spaces.
