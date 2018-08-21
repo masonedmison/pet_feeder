@@ -51,6 +51,39 @@
         
         ```shell
         printf("Hello, World!");
+        ```
+
+
+3. We can put fenced code blocks inside nested bullets, too.11
+   * Like this:        
+        ```shell
+        printf("Hello, World!");
+        ```
+
+
+3. We can put fenced code blocks inside nested bullets, too.22
+   * Like this:        
+        ```shell
+        printf("Hello, World!");
+        ```
+   * Like this:        
+        ```shell
+        printf("Hello, World!");
+        ```
+
+
+3. We can put fenced code blocks inside nested bullets, too.33
+   * Like this:        
+        
+        ```shell
+        printf("Hello, World!");
+        ```
+   * Like this:        
+        
+        ```shell
+        printf("Hello, World!");
+        ```
+
 
 
 5. Remove bloatware
@@ -329,7 +362,6 @@
     ```text
     disable_camera_led=1
     ```
-
 
 
 
