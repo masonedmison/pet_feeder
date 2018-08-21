@@ -41,6 +41,21 @@
     sudo reboot
     ```
 
+5. reeeeeeeeeeeeeeeeeeee
+     ```shell
+    sudo reboot
+    ```   
+
+5. reeeeeeeeeeeeeeeeeeee
+     ```shell
+    sudo apt-get purge wolfram-engine
+    sudo apt-get purge sonic-pi
+    sudo apt-get purge minecraft-pi
+    sudo apt-get purge libreoffice*
+    sudo apt-get clean
+    sudo apt-get autoremove
+    ```   
+    
 6. Install additional software
     ```shell
     sudo apt-get install python-dev
