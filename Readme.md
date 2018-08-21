@@ -321,8 +321,7 @@
    	
    	```text
    	motion -c /home/pi/.motion/motion.conf
-   	```
-
+    ```
     - To disable pi camera red light, from terminal
     
     ```shell
