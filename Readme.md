@@ -62,20 +62,21 @@
     - From terminal
     
     ```shell
-    sudo mkdir /var/www
+    sudo mkdir /var/www -p
     cd /var/www
     sudo virtualenv feeder
     sudo chown -R pi:www-data /var/www/feeder/
     sudo chmod 750 -R /var/www/feeder/
-    sudo chmod g+s /var/www/feeder/
+    #sudo chmod g+s /var/www/feeder/
     cd /var/www/feeder/
     source bin/activate
     pip install flask
     pip install RPi.GPIO
     git clone https://gitlab.com/DiyPetFeeder/feeder.git
-    sudo chmod 770 -R /var/www/feeder/feeder/
     cd /var/www/feeder/feeder/
     python createFiles.py 
+    sudo chown -R pi:www-data /var/www/feeder/
+    sudo chmod 770 -R /var/www/feeder/feeder/
     ```  
     
 8. Set up permissions 
@@ -93,7 +94,7 @@
     - From terminal
     
     ```shell
-    sudo usermod -a -G gpio www-data
+    sudo usermod -aG gpio www-data
     sudo usermod -aG video www-data
     sudo systemctl apache2 restart
     ```
