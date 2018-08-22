@@ -1,24 +1,26 @@
-
 ### Setup Instructions:
 
-1. Download and install latest 'Desktop' image of Raspbian onto Pi  
+1. Download and install latest 'Desktop' image of Raspbian onto Pi
+    - Directions written for 'Desktop' and NOT 'Lite' version of Raspbian  
     - [Link to latest Desktop Raspbian image](https://www.raspberrypi.org/downloads/raspbian/)
     - [Link to installing image onto SD card](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
 
-2. After pi turns on, run through welcome wizard
+2. After Pi boots, run through welcome wizard
     - Set country, language, and time zone
     - Enter ***secure password***
     - Connect to wifi
     - Skip updates when prompted. This can takes awhile and will do later.
-    - Reboot machine
+    - Restart machine
 
 3. After reboot, enable interfaces
-    - Start> Preferences> Raspberry Pi Config> Interfaces
-        - Enable VNC and Remote GPIO
+    - Start> Preferences> Raspberry Pi Configuration
+        - On 'System' tab adjust 'Resolution' if needed
+        - On 'Interfaces' tab enable 'VNC' and 'Remote GPIO'
     
 4. Update system
-    - Run following commands to from terminal to update system
-        - ***This may take awhile. Can be run later if needed***
+    - From terminal run commands to update system
+	- A shortcut to terminal should be on taskbar, otherwise Start> Accessories> Terminal
+        - ***This may take awhile. Plan accordingly***
     
     ```shell
     sudo apt-get update
@@ -276,7 +278,7 @@
 
 20. Set up motion IO 
     - If have camera installed on pi the following steps will configure software to capture video
-        - Pet feeder site is designed to work with motion IO only as of now
+        - Currently Pet feeder site is designed to only work with motion IO
     - To set up motion IO, from terminal home directory (ex. /home/pi)
     
     ```shell
@@ -299,7 +301,7 @@
     stream_maxrate 1 > stream_maxrate 15
     stream_localhost on > stream_localhost off
     ```
-    - Open /etc/modules-load.d /etc/modules
+    - Open /etc/modules
     
     ```shell
     sudo nano /etc/modules
@@ -314,10 +316,10 @@
     ```shell
     sudo nano /etc/rc.local
     ```
-    - Add command below the comment, but leave the line exit 0 at the end
+    - Add command right above line 'exit 0' at the end of file
    	
-   	```text
-   	motion -c /home/pi/.motion/motion.conf
+    ```text
+    motion -c /home/pi/.motion/motion.conf
     ```
     - To disable pi camera red light, from terminal
     
