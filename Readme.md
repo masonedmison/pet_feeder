@@ -63,15 +63,18 @@
     
     ```shell
     sudo mkdir /var/www
-    sudo chmod 777 -R /var/www
     cd /var/www
-    virtualenv feeder
-    cd feeder
+    sudo virtualenv feeder
+    sudo chown -R pi:www-data /var/www/feeder/
+    sudo chmod 750 -R /var/www/feeder/
+    sudo chmod g+s /var/www/feeder/
+    cd /var/www/feeder/
     source bin/activate
     pip install flask
     pip install RPi.GPIO
     git clone https://gitlab.com/DiyPetFeeder/feeder.git
-    cd feeder
+    sudo chmod 770 -R /var/www/feeder/feeder/
+    cd /var/www/feeder/feeder/
     python createFiles.py 
     ```  
     
@@ -104,23 +107,27 @@
     - Replace file with following. Update ServerName as needed.
     
     ```text
-    Listen 80
-    NameVirtualHost *:80
-    
-    ServerName UpdateYourServername.com
+    <VirtualHost *:80>
+    ServerName feeder.duckdns.org
     
     WSGIDaemonProcess feeder user=www-data group=www-data threads=5
     WSGIScriptAlias / /var/www/feeder/feeder/feeder.wsgi
-       
-     WSGIProcessGroup feeder
-     Order allow,deny
-     Allow from all
-     Require all granted
-     Order allow,deny
-     Allow from all 
-    
+
+    <Directory /var/www/feeder/feeder>
+    WSGIProcessGroup feeder
+    Order allow,deny
+    Allow from all
+    Require all granted
+    </Directory>
+
+    <Files feeder.wsgi>
+    Order allow,deny
+    Allow from all
+    </Files>
+
     ErrorLog /var/www/feeder/feeder/logs/apacheError.log
     CustomLog /var/www/feeder/feeder/logs/apacheAccess.log combined
+    </VirtualHost>
     ```
     - Exit file: Ctrl-x> 'Y'> Enter to confirm
 

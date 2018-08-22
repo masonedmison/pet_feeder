@@ -33,7 +33,7 @@ try:
         con.commit()
         cur.close()
         con.close()
-        ##process = subprocess.Popen(["sudo", "chmod", "777", "-R", "/var/www/feeder"],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        #process = subprocess.Popen(["sudo", "chmod", "777", "-R", "/var/www/feeder"],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         #os.chmod(dbPath, 0o777)
 	print ('DB created')
 
