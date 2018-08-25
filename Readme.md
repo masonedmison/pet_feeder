@@ -4,7 +4,7 @@
     - Directions written for 'Desktop' and NOT 'Lite' version of Raspbian  
     - [Link to latest Desktop Raspbian image](https://www.raspberrypi.org/downloads/raspbian/)
     - [Link to installing image onto SD card](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
-    - [Link to free SD flash software Etcher](https://etcher.io/)
+    - [Link to Etcher- free SD card flashing software](https://etcher.io/)
 
 2. After SD card is installed and Pi boots, run through welcome wizard
     - Set country, language, and time zone
@@ -22,7 +22,7 @@
 4. Update system
     - From terminal run commands to update system
 	- A shortcut to terminal should be on taskbar, otherwise Start> Accessories> Terminal
-        - ***This may take awhile. Plan accordingly***
+        - ***This may take awhile depending wifi/sd card speed***
     
     ```shell
     sudo apt-get update
@@ -107,7 +107,7 @@
     ```shell
     sudo nano /etc/apache2/sites-available/000-default.conf
     ```
-    - Replace all text in file with following. Update ServerName as needed.
+    - Replace all text in file with following. ServerName can be updated later.
     
     ```text
     <VirtualHost *:80>
@@ -238,7 +238,7 @@
     - Copy long string from the output section 
     
     ```text
-    echo url="https://www.duckdns.org/update?domains=petfeeder&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
+    echo url="https://www.duckdns.org/update?domains=YourCustomDomainHere&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
     ```
     - From home directory (ex. /home/pi) open terminal
     
@@ -250,7 +250,7 @@
     - Paste text copied above into duck.sh 
     
     ```text
-    echo url="https://www.duckdns.org/update?domains=petfeeder&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
+    echo url="https://www.duckdns.org/update?domains=YourCustomDomainHere&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
     ```
     - Exit file: Ctrl-x> 'Y'> Enter to confirm
     - From terminal
