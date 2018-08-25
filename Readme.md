@@ -235,7 +235,8 @@
     - On you main account page create a subdomain (for example petfeeder > petfeeder.duckdns.org)
     - Next click on install on top navagation bar
     - Select pi from 'operating systems' section and the new subdomain from drop down
-    - Copy long string from the output section 
+    - Copy long string from the output section
+    - ***Example only below. Copy actual string from site*** 
     
     ```text
     echo url="https://www.duckdns.org/update?domains=YourCustomDomainHere&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
@@ -247,11 +248,7 @@
     cd duckdns
     sudo nano duck.sh
     ```
-    - Paste text copied above into duck.sh 
-    
-    ```text
-    echo url="https://www.duckdns.org/update?domains=YourCustomDomainHere&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
-    ```
+    - Paste 'echo url' text copied above into duck.sh 
     - Exit file: Ctrl-x> 'Y'> Enter to confirm
     - From terminal
     
