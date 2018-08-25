@@ -1,11 +1,12 @@
 ### Setup Instructions:
 
-1. Download and install latest 'Desktop' image of Raspbian onto Pi
+1. On a second machine, with SD card writting capabilities, download and install latest 'Desktop' image of Raspbian onto Pi
     - Directions written for 'Desktop' and NOT 'Lite' version of Raspbian  
     - [Link to latest Desktop Raspbian image](https://www.raspberrypi.org/downloads/raspbian/)
     - [Link to installing image onto SD card](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
+    - [Link to free SD flash software Etcher](https://etcher.io/)
 
-2. After Pi boots, run through welcome wizard
+2. After SD card is installed and Pi boots, run through welcome wizard
     - Set country, language, and time zone
     - Enter ***secure password***
     - Connect to wifi
@@ -13,9 +14,10 @@
     - Restart machine
 
 3. After reboot, enable interfaces
-    - Start> Preferences> Raspberry Pi Configuration
+    - Start (Raspberry icon)> Preferences> Raspberry Pi Configuration
         - On 'System' tab adjust 'Resolution' if needed
         - On 'Interfaces' tab enable 'VNC' and 'Remote GPIO'
+        - Restart if needed
     
 4. Update system
     - From terminal run commands to update system
@@ -32,9 +34,9 @@
     
     ```shell
     sudo apt-get purge wolfram-engine
+    sudo apt-get purge libreoffice*
     sudo apt-get purge sonic-pi
     sudo apt-get purge minecraft-pi
-    sudo apt-get purge libreoffice*
     sudo apt-get clean
     sudo apt-get autoremove
     ```
@@ -45,6 +47,7 @@
     ```
 
 6. Install additional software
+    - From terminal
     
     ```shell
     sudo apt-get install python-dev
