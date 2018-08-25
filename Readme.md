@@ -27,6 +27,7 @@
     ```shell
     sudo apt-get update
     sudo apt-get upgrade
+    sudo reboot
     ```
 
 5. Remove bloatware
