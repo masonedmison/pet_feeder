@@ -22,7 +22,7 @@
 4. Update system
     - From terminal run commands to update system
 	- A shortcut to terminal should be on taskbar, otherwise Start> Accessories> Terminal
-        - ***This may take awhile depending wifi/sd card speed***
+        - ***This may take awhile depending wifi and SD card speed***
     
     ```shell
     sudo apt-get update
@@ -237,7 +237,7 @@
     - Next click on install on top navagation bar
     - Select pi from 'operating systems' section and the new subdomain from drop down
     - Copy long string from the output section
-    - ***Example only below. Copy actual string from site*** 
+    - ***Example below. Copy your actual string from site!*** 
     
     ```text
     echo url="https://www.duckdns.org/update?domains=YourCustomDomainHere&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
