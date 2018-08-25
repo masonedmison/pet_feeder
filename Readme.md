@@ -99,7 +99,6 @@
     ```shell
     sudo usermod -aG gpio www-data
     sudo usermod -aG video www-data
-    sudo systemctl apache2 restart
     ```
 
 9. Configure Apache
@@ -108,7 +107,7 @@
     ```shell
     sudo nano /etc/apache2/sites-available/000-default.conf
     ```
-    - Replace file with following. Update ServerName as needed.
+    - Replace all text in file with following. Update ServerName as needed.
     
     ```text
     <VirtualHost *:80>
@@ -190,7 +189,7 @@
     sudo logrotate --force /etc/logrotate.d
     ```
     - Notice the apache logs will be rotated at /var/www/feeder/feeder/logs
-    -   Note: button and time service log rotation are handled within service themselves
+    -   Note: button and time service log rotation are handled within service themselves and will not rotate with this command
 
 14. Verify feeder site is working
     - Open internet browser
@@ -202,7 +201,7 @@
         - Default user/password is admin/ChangeMe!
         - Under 'user logins' click add user
         - Enter user name and secure password
-        - Login to admin page again and delete default user
+        - Login to admin page again with new user and delete original default user
         - Verify time and button services are running
             - Ok for other services to not be working
 
@@ -248,7 +247,7 @@
     cd duckdns
     sudo nano duck.sh
     ```
-    - Paster text copied above into duck.sh 
+    - Paste text copied above into duck.sh 
     
     ```text
     echo url="https://www.duckdns.org/update?domains=petfeeder&token=23feabcdef-375c-1234-9e36-567890ac0a&ip=" | curl -k -o ~/duckdns/duck.log -K -
@@ -257,11 +256,12 @@
     - From terminal
     
     ```shell
-    sudo chmod 777 -R /home/pi/duckdns
+    sudo chown -R pi:pi /home/pi/duckdns/
+    sudo chmod 700 /home/pi/duckdns/duck.sh
     crontab -e
     ```
     -Select 2 if prompted
-    -Paster following into file
+    -Paste following into file
     
     ```text
     */5 * * * * /home/pi/duckdns/duck.sh >/dev/null 2>&1
@@ -270,9 +270,12 @@
     - To test run from home directory terminal
     
     ```shell
+    cd /home/pi/duckdns/
     ./duck.sh
+    cat /home/pi/duckdns/duck.log
     sudo service cron start
     ```
+    - If KO is returned versus OK, then there is an issue. Check token and domain are correct.
     - Now, every 5 minutes, duck dns script update your duckdns name (ex. petfeeder.duckdns.org) with you external ip address.
     - On the [duckdns.org](http://www.duckdns.org/) site you should now see you external IP address stored
     - You will no longer need to know if/when you IP address changes. You can externally visit the feeder site through this link (ex. petfeeder.duckdns.org)
