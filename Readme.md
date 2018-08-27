@@ -290,11 +290,11 @@
 
 20. Set up motion IO 
     - If have camera installed on pi the following steps will configure software to capture video
-        - Currently Pet feeder site is designed to only work with motion IO
+        - Currently designed to only work with motion IO
     - To set up motion IO, from terminal home directory (ex. /home/pi)
     
     ```shell
-    wget github.com/Motion-Project/motion/releases/download/release-4.1.1/pi_jessie_motion_4.1.1-1_armhf.deb
+    wget github.com/Motion-Project/motion/releases/download/release-4.1.1/pi_stretch_motion_4.1.1-1_armhf.deb
     sudo apt-get install gdebi-core
     sudo gdebi pi_stretch_motion_4.1.1-1_armhf.deb
     mkdir ~/.motion
