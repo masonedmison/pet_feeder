@@ -52,6 +52,7 @@
     
     ```shell
     sudo apt-get install python-dev
+    sudo apt-get install python3-venv
     sudo apt-get install git
     sudo apt-get install sqlite3
     sudo apt-get install virtualenv
@@ -68,7 +69,7 @@
     ```shell
     sudo mkdir /var/www -p
     cd /var/www
-    sudo virtualenv feeder
+    python3 -m venv feeder
     sudo chown -R pi:www-data /var/www/feeder/
     sudo chmod 750 -R /var/www/feeder/
     #sudo chmod g+s /var/www/feeder/
@@ -76,6 +77,7 @@
     source bin/activate
     pip install flask
     pip install RPi.GPIO
+    pip install configparser
     git clone https://gitlab.com/DiyPetFeeder/feeder.git
     cd /var/www/feeder/feeder/
     python createFiles.py 
