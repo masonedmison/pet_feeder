@@ -557,6 +557,11 @@ def CleanServiceStatusOutput(serviceOutput):
             buttonServiceEndString = serviceOutput.find('ago', buttonServiceStartString)
             buttonServiceFinalStatus = serviceOutput[buttonServiceStartString:buttonServiceEndString]
             return str('Active: '+str(buttonServiceFinalStatus))
+        elif serviceOutput.find('active (exited) since') > 0:
+            buttonServiceStartString = serviceOutput.find('active (exited) since')+len('active (exited)')
+            buttonServiceEndString = serviceOutput.find('ago', buttonServiceStartString)
+            buttonServiceFinalStatus = serviceOutput[buttonServiceStartString:buttonServiceEndString]
+            return str('Active: '+str(buttonServiceFinalStatus))
         else:
             return str(serviceOutput)
 
