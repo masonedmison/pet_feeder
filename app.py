@@ -10,17 +10,19 @@ import commonTasks
 import os
 import configparser
 import datetime
-from werkzeug import check_password_hash, generate_password_hash
+#from werkzeug import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash
 from stat import S_ISREG, ST_CTIME, ST_MODE
 import os, sys, time
 
 app = Flask(__name__)
 
 # Find config file
-dir = os.path.dirname(__file__)  # os.getcwd()
-configFilePath = os.path.abspath(os.path.join(dir, "app.cfg"))
+#dir = os.path.dirname(__file__)  # os.getcwd()
+#configFilePath = os.path.abspath(os.path.join(dir, "app.cfg"))
 configParser = configparser.RawConfigParser()
-configParser.read(configFilePath)
+configParser.read('/var/www/feeder/feeder/app.cfg')
 
 # Read in config variables
 SECRETKEY = str(configParser.get('feederConfig', 'Secretkey'))
@@ -41,8 +43,9 @@ nowMinusXDays = str(configParser.get('feederConfig', 'Number_Days_Of_Videos_To_K
 @app.route('/', methods=['GET', 'POST'])
 def home_page():
     try:
-
+        return render_template('error.html', resultsSET='latestXhkhkNumberFeedTimes')
         latestXNumberFeedTimes = commonTasks.db_get_last_feedtimes(latestXNumberFeedTimesValue)
+        return render_template('error.html', resultsSET='latestXNumberFeedTimes')
         upcomingXNumberFeedTimes = commonTasks.db_get_scheduled_feedtimes(upcomingXNumberFeedTimesValue)
 
         finalFeedTimeList = []

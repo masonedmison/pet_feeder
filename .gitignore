@@ -4,6 +4,7 @@ static/video/*
 logs/*
 feeder.db
 app.cfg
+.idea/*
 
 # exception to the rule
 !static/video/.gitkeep 

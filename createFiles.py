@@ -5,7 +5,9 @@ sys.path.extend(['/var/www/feeder/feeder'])
 import subprocess
 import sqlite3
 import os
-from werkzeug import generate_password_hash
+#from werkzeug import generate_password_hash
+from werkzeug.security import generate_password_hash
+
 import datetime
 
 try:
