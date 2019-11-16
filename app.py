@@ -43,9 +43,9 @@ nowMinusXDays = str(configParser.get('feederConfig', 'Number_Days_Of_Videos_To_K
 @app.route('/', methods=['GET', 'POST'])
 def home_page():
     try:
-        return render_template('error.html', resultsSET='latestXhkhkNumberFeedTimes')
+
         latestXNumberFeedTimes = commonTasks.db_get_last_feedtimes(latestXNumberFeedTimesValue)
-        return render_template('error.html', resultsSET='latestXNumberFeedTimes')
+
         upcomingXNumberFeedTimes = commonTasks.db_get_scheduled_feedtimes(upcomingXNumberFeedTimesValue)
 
         finalFeedTimeList = []
@@ -81,12 +81,13 @@ def home_page():
                     latestXVideoFeedTimes.append([vidDisplayDate, vidFileName, vidFileSize])
 
         latestXVideoFeedTimes = latestXVideoFeedTimes[:int(latestXNumberVideoFeedTimesValue)]
+
         latestXVideoFeedTimes = latestXVideoFeedTimes[::-1]  # Reverse so newest first
 
         cameraStatusOutput = DetectCamera()
 
         # cameraStatusOutput = 'supported=0 detected=1'
-        if "detected=1" in cameraStatusOutput:
+        if "detected=1" in str(cameraStatusOutput):
             cameraStatus = '1'
         else:
             cameraStatus = '0'
@@ -339,16 +340,16 @@ def admin_page():
     try:
         if 'userLogin' in session:
             buttonServiceFullOutput = ControlService('feederButtonService', 'status')
-            buttonServiceFinalStatus = CleanServiceStatusOutput(buttonServiceFullOutput)
+            buttonServiceFinalStatus = CleanServiceStatusOutput(str(buttonServiceFullOutput))
 
             timeServiceFullOutput = ControlService('feederTimeService', 'status')
-            timeServiceFinalStatus = CleanServiceStatusOutput(timeServiceFullOutput)
+            timeServiceFinalStatus = CleanServiceStatusOutput(str(timeServiceFullOutput))
 
             sshServiceFullOutput = ControlService('ssh', 'status')
-            sshServiceFinalStatus = CleanServiceStatusOutput(sshServiceFullOutput)
+            sshServiceFinalStatus = CleanServiceStatusOutput(str(sshServiceFullOutput))
 
             webcameraServiceFullOutput = ControlService('motion', 'status')
-            webcameraServiceFinalStatus = CleanServiceStatusOutput(webcameraServiceFullOutput)
+            webcameraServiceFinalStatus = CleanServiceStatusOutput(str(webcameraServiceFullOutput))
 
             # Bad login log
             conn = sqlite3.connect(DB)
@@ -542,16 +543,23 @@ def ControlService(serviceToCheck, command):
 
 def CleanServiceStatusOutput(serviceOutput):
     try:
+        if serviceOutput.find('could not be found') > 0:
+            return str('Inactive')
+        elif serviceOutput.find('no tty present not be found') > 0:
+            return str('Inactive')
+        elif serviceOutput.find('inactive (dead)') > 0:
+            buttonServiceStartString = serviceOutput.find('(dead) since')+len('(dead)')
+            buttonServiceEndString = serviceOutput.find('ago', buttonServiceStartString)
+            buttonServiceFinalStatus = serviceOutput[buttonServiceStartString:buttonServiceEndString]
+            return str('Inactive: ' + str(buttonServiceFinalStatus))
+        elif serviceOutput.find('active (running)') > 0:
+            buttonServiceStartString = serviceOutput.find('(running) since')+len('(running)')
+            buttonServiceEndString = serviceOutput.find('ago', buttonServiceStartString)
+            buttonServiceFinalStatus = serviceOutput[buttonServiceStartString:buttonServiceEndString]
+            return str('Active: '+str(buttonServiceFinalStatus))
+        else:
+            return str(serviceOutput)
 
-        buttonServiceStartString = serviceOutput.find('Active:') + len('Active:')
-        buttonServiceEndString = serviceOutput.find('\n', buttonServiceStartString)
-        buttonServiceFinalStatus = serviceOutput[buttonServiceStartString:buttonServiceEndString]
-        buttonServiceStartString = buttonServiceFinalStatus.find('since')
-        buttonServiceEndString = buttonServiceFinalStatus.find('; ', buttonServiceStartString)
-        buttonServiceFinalStatus = str(buttonServiceFinalStatus).replace(
-            buttonServiceFinalStatus[buttonServiceStartString:buttonServiceEndString], '')
-
-        return buttonServiceFinalStatus
     except Exception as e:
         return render_template('error.html', resultsSET=e)
 
