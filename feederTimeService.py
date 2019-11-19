@@ -10,6 +10,7 @@ import commonTasks
 import configparser
 import os
 import datetime
+from pathlib import Path
 
 # Find config file
 dir = os.path.dirname(__file__)  # os.getcwd()
@@ -173,9 +174,12 @@ while True:
                     print('Removed old video file: ' + str(f))
 
     #Update spreadsheet file if exists
-    if os.path.exists('googleapisecret.json'):
+    my_file = Path("/var/www/feeder/feeder/googleapisecret.json")
+    if my_file.is_file():
         output = commonTasks.update_spreadsheet()
         print(output)
+    else:
+        print('File not found')
 
     # Wait specified time before starting again
     time.sleep(float(secondDelay))

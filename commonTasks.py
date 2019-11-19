@@ -6,8 +6,7 @@ import datetime
 import os
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-
-#######################################################import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 # Find config file
 dir = os.path.dirname(__file__)  # os.getcwd()
@@ -184,7 +183,7 @@ def spreadsheetFeed():
 
 def update_spreadsheet():
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('googleapisecret.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name('/var/www/feeder/feeder/googleapisecret.json', scope)
     client = gspread.authorize(creds)
     sheet = client.open(spreadsheetFileName).sheet1
 
