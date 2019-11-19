@@ -1,10 +1,13 @@
 import sqlite3
 import configparser
-#######################################################import RPi.GPIO as GPIO
 import time
 from Adafruit_CharLCD import Adafruit_CharLCD
 import datetime
 import os
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+#######################################################import RPi.GPIO as GPIO
 
 # Find config file
 dir = os.path.dirname(__file__)  # os.getcwd()
@@ -14,6 +17,11 @@ configParser.read(configFilePath)
 
 # Read in config variables
 DB = str(configParser.get('feederConfig', 'Database_Location'))
+hopperGPIO = str(configParser.get('feederConfig', 'Hopper_GPIO_Pin'))
+hopperTime = str(configParser.get('feederConfig', 'Hopper_Spin_Time'))
+latestXNumberFeedTimesValue = str(configParser.get('feederConfig', 'Number_Feed_Times_To_Display'))
+upcomingXNumberFeedTimesValue = str(configParser.get('feederConfig', 'Number_Scheduled_Feed_Times_To_Display'))
+spreadsheetFileName = str(configParser.get('feederConfig', 'Spreadsheet_File_Name'))
 
 
 def connect_db():
@@ -109,7 +117,7 @@ def get_last_feedtime_string():
                                                                                                  '')  # str('%02d' % lastFeedDateObject.hour)+':'+str('%02d' % lastFeedDateObject.minute)
         else:
             verbiageString = str(abs((
-                                                 nowDateObject - lastFeedDateObject).days)) + ' days ago!'  # str('%02d' % lastFeedDateObject.month)+'-'+str('%02d' % lastFeedDateObject.day)+'-'+str(lastFeedDateObject.year)[2:]+' '+str('%02d' % lastFeedDateObject.hour)+':'+str('%02d' % lastFeedDateObject.minute)
+                                             nowDateObject - lastFeedDateObject).days)) + ' days ago!'  # str('%02d' % lastFeedDateObject.month)+'-'+str('%02d' % lastFeedDateObject.day)+'-'+str(lastFeedDateObject.year)[2:]+' '+str('%02d' % lastFeedDateObject.hour)+':'+str('%02d' % lastFeedDateObject.minute)
 
         finalMessage = 'Last feed time:\n' + verbiageString
         return finalMessage
@@ -133,7 +141,7 @@ def spin_hopper(pin, duration):
 
         return 'ok'
     except Exception as e:
-        return 'ok'#e
+        return 'ok'  # e
 
 
 def print_to_LCDScreen(message):
@@ -157,4 +165,75 @@ def print_to_LCDScreen(message):
 
         return 'ok'
     except Exception as e:
-        return 'ok'#e
+        return 'ok'  # e
+
+
+def spreadsheetFeed():
+    dateNowObject = datetime.datetime.now()
+    spin = spin_hopper(hopperGPIO, hopperTime)
+
+    if spin != 'ok':
+        return 'Error! No feed activated! Error Message: ' + str(spin)
+
+    dbInsert = db_insert_feedtime(dateNowObject, 6)  # FeedType 6=Spreadsheet
+    if dbInsert != 'ok':
+        return 'Warning. Database did not update. Message returned: ' + str(dbInsert)
+
+    return 'Feed success!'
+
+
+def update_spreadsheet():
+    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+    creds = ServiceAccountCredentials.from_json_keyfile_name('googleapisecret.json', scope)
+    client = gspread.authorize(creds)
+    sheet = client.open(spreadsheetFileName).sheet1
+
+    # example calls
+    # times = sheet.get_all_records()
+    # feedingNeeded = sheet.row_values(1)
+    # sheet.update_cell(2,4,"false")
+    triggerFeeding = sheet.cell(2, 4).value  # Check if box is checked to do a feeding
+    if triggerFeeding == 'TRUE':
+        output = spreadsheetFeed()  # do feed
+
+        if str(output) == 'Feed success!':  # update spreadsheet if successfull else update with error
+
+            # Set box back to false to allow another feeding to occur
+            sheet.update_cell(2, 4, "FALSE")
+
+            # Update latest feed times to spreadsheet
+            latestXNumberFeedTimes = db_get_last_feedtimes(latestXNumberFeedTimesValue)
+            rowCounter = 2  # Row 1 has column titles, dont want to overwrite
+            finalFeedTimeList = []
+            for time in latestXNumberFeedTimes:
+                time = list(time)
+                dateobject = datetime.datetime.strptime(time[0], '%Y-%m-%d %H:%M:%S')
+                time[0] = dateobject.strftime("%m-%d-%y %I:%M %p")
+                time = tuple(time)
+                # print (time[0])
+                # print(time[1])
+                sheet.update_cell(rowCounter, 1, time[0])
+                sheet.update_cell(rowCounter, 2, time[1])
+                rowCounter += 1
+
+            # Update latest scheduled feedtimes to spreadsheet
+            scheduledFeedtimes = db_get_scheduled_feedtimes(upcomingXNumberFeedTimesValue)
+            rowCounter = 2  # Row 1 has column titles, dont want to overwrite
+            finalUpcomingFeedTimeList = []
+            for scheduledFeedTime in scheduledFeedtimes:
+                scheduledFeedTime = list(scheduledFeedTime)
+                dateobject = datetime.datetime.strptime(scheduledFeedTime[0], '%Y-%m-%d %H:%M:%S')
+                finalString = dateobject.strftime("%m-%d-%y %I:%M %p")
+
+                # 1900-01-01 default placeholder date for daily reoccuring feeds
+                if str(scheduledFeedTime[2]) == '5':  # Repeated schedule. Strip off Date
+                    finalString = finalString.replace("01-01-00", "Daily at")
+                # print (finalString)
+                sheet.update_cell(rowCounter, 6, finalString)
+                rowCounter += 1
+            return ('spreadsheet updated')
+        else:  # feed was not success dump error to spreadsheet
+            sheet.update_cell(2, 8, str(output))
+            return str(output)
+    else:
+        return "spreadsheet box not checked"

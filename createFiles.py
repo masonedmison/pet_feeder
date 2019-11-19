@@ -65,6 +65,7 @@ Number_Videos_To_Display=100
 Seconds_Delay_After_Button_Push=3
 Seconds_Delay_Between_Schedule_Checks=300
 Secretkey=SUPER_SECRET_KEY
+Spreadsheet_File_Name=PetFeederTimes
 """)
 
         f.close()

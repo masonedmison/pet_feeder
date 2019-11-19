@@ -172,6 +172,11 @@ while True:
                     os.remove(os.path.join(motionVideoDirPath, f))
                     print('Removed old video file: ' + str(f))
 
+    #Update spreadsheet file if exists
+    if os.path.exists('googleapisecret.json'):
+        output = commonTasks.update_spreadsheet()
+        print(output)
+
     # Wait specified time before starting again
     time.sleep(float(secondDelay))
     if killer.kill_now: break
