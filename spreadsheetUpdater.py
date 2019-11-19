@@ -29,7 +29,7 @@ def spreadsheetFeed():
 
     dbInsert = commonTasks.db_insert_feedtime(dateNowObject, 6)  # FeedType 6=Spreadsheet
     if dbInsert != 'ok':
-        return 'Warning. Database did not update: ' + str(dbInsert)
+        return 'Warning. Database did not update. Message returned: ' + str(dbInsert)
 
     return 'Feed success!'
 
