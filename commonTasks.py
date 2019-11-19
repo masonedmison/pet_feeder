@@ -1,6 +1,6 @@
 import sqlite3
 import configparser
-import RPi.GPIO as GPIO
+#######################################################import RPi.GPIO as GPIO
 import time
 from Adafruit_CharLCD import Adafruit_CharLCD
 import datetime
@@ -46,7 +46,7 @@ def db_get_last_feedtimes(numberToGet):
         cur = con.execute(''' select feeddate,description
                                 from feedtimes ft
                                 join feedtypes fty on ft.feedtype=fty.feedtype
-                                where ft.feedtype in (1,2,3,4)
+                                where ft.feedtype in (1,2,3,4,6)
                                 order by feeddate desc
                                 limit ?''', [str(numberToGet), ])
         LastFeedingTimes = cur.fetchall()

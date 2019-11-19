@@ -32,6 +32,7 @@ try:
         cur = con.execute("""insert into feedtypes (feedtype,description) values ("3","Scheduled");""")
         cur = con.execute("""insert into feedtypes (feedtype,description) values ("4","Smart Home");""")
         cur = con.execute("""insert into feedtypes (feedtype,description) values ("5","Repeat Schedule To Run");""")
+        cur = con.execute("""insert into feedtypes (feedtype,description) values ("6","Spreadsheet");""")
         cur = con.execute('''insert into user (username,email,pw_hash) values (?,?,?)''',
                           ['admin', '', generate_password_hash('ChangeMe!')])
         nowDate = datetime.datetime.now()
