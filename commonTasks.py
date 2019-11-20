@@ -201,8 +201,19 @@ def update_spreadsheet():
             # Set box back to false to allow another feeding to occur
             sheet.update_cell(1, 2, "FALSE")
 
+            #clear out old data
+            cell_list = sheet.range('A4:A25')
+            for cell in cell_list:
+                cell.value = ''
+            sheet.update_cells(cell_list)
+                        
+            cell_list = sheet.range('B4:B25')
+            for cell in cell_list:
+                cell.value = ''
+            sheet.update_cells(cell_list)   
+                
             # Update latest feed times to spreadsheet
-            latestXNumberFeedTimes = commonTasks.db_get_last_feedtimes(latestXNumberFeedTimesValue)
+            latestXNumberFeedTimes = db_get_last_feedtimes(latestXNumberFeedTimesValue)
             rowCounter = 4  # Row 1-3 has column titles, dont want to overwrite
             finalFeedTimeList = []
             for time in latestXNumberFeedTimes:
@@ -238,7 +249,7 @@ def update_spreadsheet():
             format_cell_range(sheet, "A1:B1", fmt1)  # Checkbox
 
             scheduledFeedingTitleRowValue = scheduledFeedingTitleRowValue +1 # Start below title bar
-            scheduledFeedtimes = commonTasks.db_get_scheduled_feedtimes(upcomingXNumberFeedTimesValue)
+            scheduledFeedtimes = db_get_scheduled_feedtimes(upcomingXNumberFeedTimesValue)
             finalUpcomingFeedTimeList = []
             for scheduledFeedTime in scheduledFeedtimes:
                 scheduledFeedTime = list(scheduledFeedTime)
