@@ -178,8 +178,6 @@ while True:
     if my_file.is_file():
         output = commonTasks.update_spreadsheet()
         print(output)
-    else:
-        print('File not found')
 
     # Wait specified time before starting again
     time.sleep(float(secondDelay))
