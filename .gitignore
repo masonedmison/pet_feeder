@@ -4,6 +4,8 @@ static/video/*
 logs/*
 feeder.db
 app.cfg
+.idea/*
+googleapisecret.json
 
 # exception to the rule
 !static/video/.gitkeep 

@@ -177,59 +177,46 @@
     </div>
 
 
-
     <script>
         var a=document.getElementById("TimeServiceMessage");
-        var endSearch=a.innerHTML.indexOf("(");
-        var substring=a.innerHTML.substring(0,endSearch)
-        substring=substring.trim()
-
-        if (substring == "active") {
+        var a=a.innerHTML
+        if (a.match(/Active.*/)) {
             document.getElementById("TimeServiceIcon").setAttribute("src","/static/images/greencircle.png")
         }
-        if (substring == "inactive") {
+        if (a.match(/Inactive.*/)) {
             document.getElementById("TimeServiceIcon").setAttribute("src","/static/images/redcircle.png")
         }
     </script>
 
     <script>
         var a=document.getElementById("ButtonServiceMessage");
-        var endSearch=a.innerHTML.indexOf("(");
-        var substring=a.innerHTML.substring(0,endSearch)
-        substring=substring.trim()
-
-        if (substring == "active") {
+        var a=a.innerHTML
+        if (a.match(/Active.*/)) {
             document.getElementById("ButtonServiceIcon").setAttribute("src","/static/images/greencircle.png")
         }
-        if (substring == "inactive") {
+        if (a.match(/Inactive.*/)) {
             document.getElementById("ButtonServiceIcon").setAttribute("src","/static/images/redcircle.png")
         }
     </script>
 
     <script>
         var a=document.getElementById("WebcamServiceMessage");
-        var endSearch=a.innerHTML.indexOf("(");
-        var substring=a.innerHTML.substring(0,endSearch)
-        substring=substring.trim()
-
-        if (substring == "active") {
+        var a=a.innerHTML
+        if (a.match(/Active.*/)) {
             document.getElementById("WebcamServiceIcon").setAttribute("src","/static/images/greencircle.png")
         }
-        if (substring == "inactive") {
+        if (a.match(/Inactive.*/)) {
             document.getElementById("WebcamServiceIcon").setAttribute("src","/static/images/redcircle.png")
         }
     </script>
 
     <script>
         var a=document.getElementById("sshServiceMessage");
-        var endSearch=a.innerHTML.indexOf("(");
-        var substring=a.innerHTML.substring(0,endSearch)
-        substring=substring.trim()
-
-        if (substring == "active") {
+        var a=a.innerHTML
+        if (a.match(/Active.*/)) {
             document.getElementById("sshServiceIcon").setAttribute("src","/static/images/greencircle.png")
         }
-        if (substring == "inactive") {
+        if (a.match(/Inactive.*/)) {
             document.getElementById("sshServiceIcon").setAttribute("src","/static/images/redcircle.png")
         }
     </script>
