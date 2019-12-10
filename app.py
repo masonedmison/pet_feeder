@@ -10,7 +10,7 @@ import commonTasks
 import os
 import configparser
 import datetime
-#from werkzeug import check_password_hash, generate_password_hash
+# from werkzeug import check_password_hash, generate_password_hash
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from stat import S_ISREG, ST_CTIME, ST_MODE
@@ -19,8 +19,8 @@ import os, sys, time
 app = Flask(__name__)
 
 # Find config file
-#dir = os.path.dirname(__file__)  # os.getcwd()
-#configFilePath = os.path.abspath(os.path.join(dir, "app.cfg"))
+# dir = os.path.dirname(__file__)  # os.getcwd()
+# configFilePath = os.path.abspath(os.path.join(dir, "app.cfg"))
 configParser = configparser.RawConfigParser()
 configParser.read('/var/www/feeder/feeder/app.cfg')
 
@@ -548,20 +548,20 @@ def CleanServiceStatusOutput(serviceOutput):
         elif serviceOutput.find('no tty present not be found') > 0:
             return str('Inactive')
         elif serviceOutput.find('inactive (dead)') > 0:
-            buttonServiceStartString = serviceOutput.find('(dead) since')+len('(dead)')
+            buttonServiceStartString = serviceOutput.find('(dead) since') + len('(dead)')
             buttonServiceEndString = serviceOutput.find('ago', buttonServiceStartString)
             buttonServiceFinalStatus = serviceOutput[buttonServiceStartString:buttonServiceEndString]
             return str('Inactive: ' + str(buttonServiceFinalStatus))
         elif serviceOutput.find('active (running)') > 0:
-            buttonServiceStartString = serviceOutput.find('(running) since')+len('(running)')
+            buttonServiceStartString = serviceOutput.find('(running) since') + len('(running)')
             buttonServiceEndString = serviceOutput.find('ago', buttonServiceStartString)
             buttonServiceFinalStatus = serviceOutput[buttonServiceStartString:buttonServiceEndString]
-            return str('Active: '+str(buttonServiceFinalStatus))
+            return str('Active: ' + str(buttonServiceFinalStatus))
         elif serviceOutput.find('active (exited) since') > 0:
-            buttonServiceStartString = serviceOutput.find('active (exited) since')+len('active (exited)')
+            buttonServiceStartString = serviceOutput.find('active (exited) since') + len('active (exited)')
             buttonServiceEndString = serviceOutput.find('ago', buttonServiceStartString)
             buttonServiceFinalStatus = serviceOutput[buttonServiceStartString:buttonServiceEndString]
-            return str('Active: '+str(buttonServiceFinalStatus))
+            return str('Active: ' + str(buttonServiceFinalStatus))
         else:
             return str(serviceOutput)
 

@@ -195,21 +195,21 @@ def update_spreadsheet():
     triggerFeeding = sheet.cell(1, 2).value  # Check if box is checked to do a feeding
     if triggerFeeding == 'TRUE':
         output = spreadsheetFeed()  # do feed
-        sheet.update_cell(1, 2, "FALSE")# Set box back to false to allow another feeding to occur
+        sheet.update_cell(1, 2, "FALSE")  # Set box back to false to allow another feeding to occur
         if str(output) != 'Feed success!':
-            return "Error updating sheet. Error message: "+str(output)
+            return "Error updating sheet. Error message: " + str(output)
 
-    #clear out old data
+    # clear out old data
     cell_list = sheet.range('A4:A25')
     for cell in cell_list:
         cell.value = ''
     sheet.update_cells(cell_list)
-                
+
     cell_list = sheet.range('B4:B25')
     for cell in cell_list:
         cell.value = ''
-    sheet.update_cells(cell_list)   
-                
+    sheet.update_cells(cell_list)
+
     # Update latest feed times to spreadsheet
     latestXNumberFeedTimes = db_get_last_feedtimes(latestXNumberFeedTimesValue)
     rowCounter = 4  # Row 1-3 has column titles, dont want to overwrite
@@ -226,27 +226,28 @@ def update_spreadsheet():
         rowCounter += 1
 
     # Update latest scheduled feedtimes to spreadsheet
-    #Get position of title for schedeuled feeds
-    scheduledFeedingTitleRowValue=3+int(latestXNumberFeedTimesValue)+2 #Start Below 3 frozen columns+latest number of feedings+padding
+    # Get position of title for schedeuled feeds
+    scheduledFeedingTitleRowValue = 3 + int(
+        latestXNumberFeedTimesValue) + 2  # Start Below 3 frozen columns+latest number of feedings+padding
     sheet.update_cell(scheduledFeedingTitleRowValue, 1, "Scheduled Feed Times")
 
-    #Bold it
+    # Bold it
     fmt = cellFormat(
-        backgroundColor=color(1,.7,1), #RGD value / 255
-        textFormat=textFormat(bold=True),#, foregroundColor=color(1, 0, 1)),
+        backgroundColor=color(1, .7, 1),  # RGD value / 255
+        textFormat=textFormat(bold=True),  # , foregroundColor=color(1, 0, 1)),
         horizontalAlignment='LEFT'
     )
-    rangeValue="A"+str(scheduledFeedingTitleRowValue)+":"+"A"+str(scheduledFeedingTitleRowValue)
-    format_cell_range(sheet, str(rangeValue), fmt) #Scheduled feed title
-    format_cell_range(sheet, "A3:B3", fmt) #Latest time title
+    rangeValue = "A" + str(scheduledFeedingTitleRowValue) + ":" + "A" + str(scheduledFeedingTitleRowValue)
+    format_cell_range(sheet, str(rangeValue), fmt)  # Scheduled feed title
+    format_cell_range(sheet, "A3:B3", fmt)  # Latest time title
     fmt1 = cellFormat(
-        backgroundColor=color(.85,.96,1), #RGD value / 255
-        textFormat=textFormat(bold=True),#, foregroundColor=color(1, 0, 1)),
+        backgroundColor=color(.85, .96, 1),  # RGD value / 255
+        textFormat=textFormat(bold=True),  # , foregroundColor=color(1, 0, 1)),
         horizontalAlignment='LEFT'
     )
     format_cell_range(sheet, "A1:B1", fmt1)  # Checkbox
 
-    scheduledFeedingTitleRowValue = scheduledFeedingTitleRowValue +1 # Start below title bar
+    scheduledFeedingTitleRowValue = scheduledFeedingTitleRowValue + 1  # Start below title bar
     scheduledFeedtimes = db_get_scheduled_feedtimes(upcomingXNumberFeedTimesValue)
     finalUpcomingFeedTimeList = []
     for scheduledFeedTime in scheduledFeedtimes:
@@ -260,10 +261,10 @@ def update_spreadsheet():
         # print (finalString)
         sheet.update_cell(scheduledFeedingTitleRowValue, 1, finalString)
         scheduledFeedingTitleRowValue += 1
-    sheet.update_cell(1, 3, "") #Clear out any errors
+    sheet.update_cell(1, 3, "")  # Clear out any errors
     fmt2 = cellFormat(
-        backgroundColor=color(1,1,1), #RGD value / 255
-        textFormat=textFormat(bold=True),#, foregroundColor=color(1, 0, 1)),
+        backgroundColor=color(1, 1, 1),  # RGD value / 255
+        textFormat=textFormat(bold=True),  # , foregroundColor=color(1, 0, 1)),
         horizontalAlignment='LEFT'
     )
     format_cell_range(sheet, "C1:C1", fmt2)  # Checkbox

@@ -173,7 +173,7 @@ while True:
                     os.remove(os.path.join(motionVideoDirPath, f))
                     print('Removed old video file: ' + str(f))
 
-    #Update spreadsheet file if exists
+    # Update spreadsheet file if exists
     my_file = Path("/var/www/feeder/feeder/googleapisecret.json")
     if my_file.is_file():
         output = commonTasks.update_spreadsheet()
