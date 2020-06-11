@@ -80,9 +80,10 @@ def home_page():
                     vidFileSize = str(round(os.path.getsize(os.path.join(path, name)) / (1024 * 1024.0), 1))
                     latestXVideoFeedTimes.append([vidDisplayDate, vidFileName, vidFileSize])
 
+        latestXVideoFeedTimes = latestXVideoFeedTimes[::-1]  # Reverse so newest first
         latestXVideoFeedTimes = latestXVideoFeedTimes[:int(latestXNumberVideoFeedTimesValue)]
 
-        latestXVideoFeedTimes = latestXVideoFeedTimes[::-1]  # Reverse so newest first
+        
 
         cameraStatusOutput = DetectCamera()
 
