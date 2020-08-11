@@ -2,6 +2,7 @@ import sqlite3
 import configparser
 import time
 from Adafruit_CharLCD import Adafruit_CharLCD
+from lcd_i2c import lcd_init, lcd_string, LCD_LINE_1, LCD_LINE_2, LCD_LINE_3, LCD_LINE_4
 import datetime
 import os
 import gspread
@@ -145,6 +146,23 @@ def spin_hopper(pin, duration):
 
 
 def print_to_LCDScreen(message):
+    try:
+        lines = [LCD_LINE_1, LCD_LINE_2, LCD_LINE_3, LCD_LINE_4]
+
+        message_spli = message.split("\n")
+
+        lcd_init()
+        for lcd_line, mess_line in zip(lines, message_spli):
+            print("sending message line", mess_line)
+            lcd_string(mess_line, lcd_line) 
+        
+        return "ok"
+
+    except Exception as e:
+        return f"problem sending message- caught e {e}"
+
+
+def print_to_LCDScreen_deprecated(message):
     try:
         lcd = Adafruit_CharLCD()
         lcd.begin(16, 2)
